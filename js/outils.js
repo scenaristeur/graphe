@@ -279,15 +279,16 @@ if (champsRemplis == 3){
 	triplets.push(triplet);
 	console.log(triplets);
 	triplets2links(triplets);
-}else{
+}else if (champsRemplis == 1){
 	console.log("recherche");
-	var r = select("#David");
-	console.log(r);
-
+  if (sujetTemp!=""){
+    rechercheXML(sujetTemp);
+  }
+  if (objetTemp!=""){
+    rechercheXML(objetTemp);
+  }
 }
-
 }
-
 
 /*
 function getClass(obj) {

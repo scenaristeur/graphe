@@ -1,7 +1,3 @@
-
-
-
-
 //AFFICHAGE
 var canvas;
 var facteurZoom = 2;
@@ -29,6 +25,10 @@ var objetValue;
 var triplets = [];
 var noeuds = [];
 var links = [];
+
+//SPARQL
+var endpoints = [];
+var dbpediaPath = "http://dbpedia.org/data/";
 
 //PHYSICS
 var physics;
@@ -174,6 +174,7 @@ function draw(){
 		//pour eviter que les proprietes ne se superposent ou gerer une repulsion
 		//	var milieuSens = createVector((debX * 3 + finX) / 4+random(10), (debY * 3 + finY) / 4+random(10), (debZ * 3 + finZ) / 4+random(10));
 		beginShape();
+	//	fill(0, 0, 0);
 			vertex(debX, debY,debZ);
 			vertex(milieuSens.x,milieuSens.y,milieuSens.z);
 			vertex(finX, finY,finZ);
@@ -220,4 +221,100 @@ function inputObjetEvent(){
 	console.log('you are typing Obj: ', this.value());
 	objetValue = this.value();
 	modeCommande = false;
+}
+
+function rechercheXML(recherche){
+	    //var path=dbpediaPath+recherche+".json";
+			var query="http://fr.dbpedia.org/sparql?default-graph-uri=http://fr.dbpedia.org&query=DESCRIBE+%3Chttp://fr.dbpedia.org/resource/"+recherche+"%3E&output=application/ld-json";
+		/*	var query="http://fr.dbpedia.org/sparql?default-graph-uri=http://fr.dbpedia.org&query=";
+			 query+="SELECT * WHERE {";
+   			query+="OPTIONAL{  <http://fr.dbpedia.org/resource/"+recherche+"> ?p ?o}\n";
+   			query+="OPTIONAL{ ?s ?p <http://fr.dbpedia.org/resource/"+recherche+">}";
+				query+="}";
+				query+="LIMIT 10";
+				query+="&output=application/ld-json";*/
+			console.log(query);
+	//		loadStrings(query,describeCharge,describeErreur);
+}
+
+
+function describeCharge(response){
+  //console.log(response);
+	console.log(response.length);
+
+	for (var i=0; i< 1000;i++){
+		var sujetUri = "";
+		var propUri = "";
+		var objetUri = "";
+		var tripletDescribe = response[i].trim();
+		var tripletDescribeArray = tripletDescribe.split(/\s+/);
+		console.log(tripletDescribeArray.length);
+		var lastCar = tripletDescribe.slice(-1);
+	//	console.log(lastCar);
+
+		switch(tripletDescribeArray.length) {
+	    /*case 0:
+						console.log(tripletDescribeArray.length);
+						console.log(tripletDescribeArray);
+	        break;
+	    case 1:
+		console.log(tripletDescribeArray.length);
+								console.log(tripletDescribeArray);
+	        break;
+			case 2:
+					console.log(tripletDescribeArray.length);
+											console.log(tripletDescribeArray);
+
+			  	break;
+					case 3:
+				console.log(tripletDescribeArray.length);
+										console.log(tripletDescribeArray);
+							break;*/
+							case 4:
+						console.log(tripletDescribeArray.length);
+												console.log(tripletDescribeArray);
+													sujetUri = tripletDescribeArray[0];
+													propUri = tripletDescribeArray[1];
+													objetUri = tripletDescribeArray[2];
+													console.log(sujetUri);
+													console.log(propUri);
+													console.log(objetUri);
+					        break;
+	    default:
+	        console.log("si cette ligne s'affiche, y'a un pb "+tripletDescribeArray.length);
+	}
+
+	var sujetPrefix = sujetUri.split(":")[0];
+	var propPrefix = propUri.split(":")[0];
+	var objetPrefix = objetUri.split(":")[0];
+	var sujetLocal = sujetUri.split(":")[1];
+	var propLocal = propUri.split(":")[1];
+	var objetLocal = objetUri.split(":")[1];
+
+if (sujetLocal != undefined && propLocal != undefined && objetLocal != undefined){
+	var triplet = new Triplet(sujetLocal,propLocal,objetLocal);
+	triplets.push(triplet);
+
+}
+
+
+		/*var tripletDescribeArray = tripletDescribe.toString().split(" ");
+		console.log(tripletDescribeArray);
+
+		console.log(sujetUri);
+		console.log(propUri);
+		console.log(objetUri);
+*/
+if(i%10==0){
+	//console.log(triplet);
+triplets2links(triplets);
+}
+	}
+
+}
+
+function describeErreur(response){
+    console.log(response);
+		message("ERREUR de chargement du fichier json " );
+
 }
