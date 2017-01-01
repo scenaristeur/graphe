@@ -24,6 +24,7 @@ function commandes(){
   if (keyIsDown(73)){ // touche i pour passer en mode insertion comme vi =  sortir du mode commande
     modeCommande = false;
     message("Mode commande : "+modeCommande);
+      document.getElementById('inputSujet').focus();
   }
 //ROTATION
   if (keyIsDown(65))//touche a
@@ -50,6 +51,9 @@ function commandes(){
 function commandesEdition(){
   if (keyIsDown(ESCAPE)){    // touche ESC pour passer en mode commande comme vi, sortir du mode insertion
     modeCommande = true;
+    document.getElementById('inputSujet').blur();
+    document.getElementById('inputProp').blur();
+    document.getElementById('inputObjet').blur();
     message("Mode commande : "+modeCommande);
   }
 }

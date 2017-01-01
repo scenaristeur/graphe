@@ -6,7 +6,7 @@
  * @author Adam Saponara <saponara TA gmail TOD com> (JavaScript port)
  * @version 0.2
  * @date August 8, 2010
- *
+ *http://murderandcreate.com/physics/bouncy_balls/Bouncy_Balls.txt
  */
 /* hacked by smag0 (http://smag0.blogspot.fr/)--> add propriete to Spring for the project Dreamcatcher & use it with RDF */
 
