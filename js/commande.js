@@ -87,7 +87,7 @@ function keyPressed() {
         // f pour charger des données
 
         var query="";
-        var endpointAsk = prompt("Choisissez un Endpoint", "http://rdf-smag0.rhcloud.com/ds/query");
+        var endpointAsk = prompt("Choisissez un Endpoint", "https://rdf-smag0.rhcloud.com/ds/query");
         if (endpointAsk != null) {
           //  document.getElementById("demo").innerHTML =
           //  "Hello " + person + "! How are you today?";

@@ -288,7 +288,7 @@ function gereAttractions(){
 
 function continueRequete(){
 	offsetSparql+=limiteSparql;
-	var endpointAsk = "http://rdf-smag0.rhcloud.com/ds/query";
+	var endpointAsk = "https://rdf-smag0.rhcloud.com/ds/query";
 	var queryAsk = "select+*+where+%7B%3FSujet+%3FPredicat+%3FObjet%7D+LIMIT"+limiteSparql+"OFFSET"+offsetSparql+"&output=json";
 	query=endpointAsk+"?query="+queryAsk;
 			message (query);
