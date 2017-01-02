@@ -148,7 +148,7 @@ if (afficheTout == true){
 		var particle = physics.particles[i];
 		if ((particle.id != "mouse") && (particle.id != "centre")){
 		//	handleBoundaryCollisions( particle );
-		if( deuxD == true){}
+		if( deuxD == true){
 		handle2DLimite(particle);
 	}
 			var x=particle.position.x;
