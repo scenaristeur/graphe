@@ -66,17 +66,46 @@ function keyPressed() {
         //d pour DEBUG
         console.log(physics);
        break;*/
+       case 77:
+        //m pour basculer afficheTout
+        afficheTout = !afficheTout;
+        console.log(afficheTout);
+       break;
        case 188:
         //? pour stabilisation
-        stabilisation = ! stabilisation;
+        stabilisation = !stabilisation;
         console.log(stabilisation);
        break;
+
        case 223:
         // ! pour passer de 2D à 3D
         deuxD=!deuxD;
         SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
         noeuds[0].particule.position.set(noeuds[0].particule.position.x,noeuds[0].particule.position.y,noeuds[0].particule.position.z+10);
        break;
+       case 70:
+        // f pour charger des données
+
+        var query="";
+        var endpointAsk = prompt("Choisissez un Endpoint", "http://rdf-smag0.rhcloud.com/ds/query");
+        if (endpointAsk != null) {
+          //  document.getElementById("demo").innerHTML =
+          //  "Hello " + person + "! How are you today?";
+
+          var queryAsk = prompt("Choisissez une Requete", "select+*+where+%7B%3FSujet+%3FPredicat+%3FObjet%7D+LIMIT"+limiteSparql+"OFFSET"+offsetSparql+"&output=json");
+          if (queryAsk != null) {
+              query=endpointAsk+"?query="+queryAsk;
+                  message (query);
+                  console.log(query);
+                  envoiJSONQuery(query);
+          }
+        }
+
+        break;
+        case 71:
+         //g pour charger plus de resultats
+         continueRequete();
+        break;
        case 72:
         // h pour afficher l'aide
         message (defautMessage);

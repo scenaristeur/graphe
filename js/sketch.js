@@ -17,6 +17,9 @@ defautMessage+=" espace pour reinitialiser la camera,  clic pour tourner, fleche
 defautMessage+=" touche ! pour passer en 2D/3D, et les trois champs ci-dessous pour ajouter <a href='https://fr.wikipedia.org/wiki/Resource_Description_Framework' target='-blank'>un triplet RDF</a>";
 var rotationX = 0,rotationY = 0,rotationZ = 0;
 var font = '36pt Times';
+var afficheTout = true;
+var triplets2add =[];
+
 
 // DONNEES
 var sujetValue;
@@ -29,6 +32,8 @@ var links = [];
 //SPARQL
 var endpoints = [];
 var dbpediaPath = "http://dbpedia.org/data/";
+var limiteSparql = 10;
+var offsetSparql = 0;
 
 //PHYSICS
 var physics;
@@ -39,6 +44,7 @@ var SPRING_STRENGTH_DEFAULT = 0.0001; //0.01
 var SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
 var springLongueurDefault=75;
 var springLongueur=springLongueurDefault;
+var seuilAtt=springLongueur*3;
 var centroid = new Smoother3D(0.9);
 var mouse,b,c =new Particle();
 //var inputLongueur;
@@ -132,10 +138,17 @@ function draw(){
 		//affichage centre 0,0,0, la particule "centre" a pu se déplacer ?
   box( 10 );
 
+	if(stabilisation){
+		stabilisation();
+	}
+
+
+if (afficheTout == true){
 	for (i = 0 ; i< physics.particles.length;i++){
 		var particle = physics.particles[i];
 		if ((particle.id != "mouse") && (particle.id != "centre")){
-			handleBoundaryCollisions( particle );
+		//	handleBoundaryCollisions( particle );
+		handle2DLimite(particle);
 			var x=particle.position.x;
 			var y=particle.position.y;
 			var z=particle.position.z;
@@ -143,9 +156,9 @@ function draw(){
 			push();
 	  	translate( x, y ,z );
 			if ((particle.id==sujetValue) /*|| (particle.id==objetValue)*/){
-				torus(10, 3);
+				torus(10+max(0,cameraZ/20),3+max(0,cameraZ/100));
 			}else if (/*(particle.id==sujetValue) ||*/ (particle.id==objetValue)){
-			 	cone(20, 20);
+			 	cone(20+max(0,cameraZ/20));
 			}else{
 				var d = dist (	mouse.position.x,mouse.position.y,mouse.position.z,particle.position.x,particle.position.y,particle.position.z)
 				if(d<30){
@@ -175,10 +188,8 @@ function draw(){
 		}
 	}
 
-	if(stabilisation){
-		stabilisation();
-	}
 
+}
 	for (i = 0 ; i< physics.springs.length;i++){
 		var spring = physics.springs[i];
 		var deb = spring.a;
@@ -208,6 +219,7 @@ function draw(){
 		//if ((this.sujet.particle.position.z>0 && (this.objet.particle.position.z>0))){
 		//if (afficheTexte) {
 		//	translate(10, 10, -10);
+		if (afficheTout == true){
 		translate(milieuSens.x, milieuSens.y, milieuSens.z);
 		rotateX(-rotationX);
 		rotateY(-rotationY);
@@ -217,8 +229,71 @@ function draw(){
 		//	box(80, 80, 80);
 		plane(spring.IMGtaille, 20);
 		pop();
+	}
 		normalMaterial();
 	}
+
+
+while(triplets2add.length){
+	var lim=min(10,triplets2add.length);
+		for (var l=0;l<lim;l++){
+			var t=triplets2add.pop();
+		//	console.log(t);
+			var triplet = new Triplet(t.sujet,t.propriete,t.objet);
+			triplets.push(triplet);
+		//	triplets2links(triplets);
+
+		}
+			console.log(triplets2add.length+" "+triplets.length);
+			triplets2links(triplets);
+			updateAttractions();
+
+
+}
+if(triplets2add.length == 0){
+	//	continueRequete();
+
+	gereAttractions();
+}
+
+
+}
+
+
+
+function gereAttractions(){
+//	console.log("springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
+	//console.log(physics.attractions[0]);
+	var att2remove=[];
+	for (var i=0;i<physics.attractions.length;i++){
+		var att = physics.attractions[i];
+
+		var a = att.a.position;
+		var b = att.b.position;
+		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
+		//console.log(physics.attractions.length+" "+d);
+		if (d>(springLongueur*3)){
+			att2remove.push(att);
+		}
+
+	}
+	var av=att2remove.length;
+	for (var j=0;j<att2remove.length;j++){
+		var att = att2remove[j];
+		physics.attractions.remove(att);
+	}
+	updateAttractions();
+//	console.log(av +" "+att2remove.length+" "+physics.attractions.length);
+}
+
+function continueRequete(){
+	offsetSparql+=limiteSparql;
+	var endpointAsk = "http://rdf-smag0.rhcloud.com/ds/query";
+	var queryAsk = "select+*+where+%7B%3FSujet+%3FPredicat+%3FObjet%7D+LIMIT"+limiteSparql+"OFFSET"+offsetSparql+"&output=json";
+	query=endpointAsk+"?query="+queryAsk;
+			message (query);
+			console.log(query);
+			envoiJSONQuery(query);
 }
 
 
@@ -245,9 +320,57 @@ function inputObjetEvent(){
 	modeCommande = false;
 }
 
+function envoiJSONQuery(query){
+	loadJSON(query,jsonDataOk,jsonDataError);
+}
+
+
+function jsonDataOk(data){
+	console.log(data);
+		console.log(data.head.vars);
+			console.log(data.results.bindings);
+			var jsonTriplets = data.results.bindings;
+
+
+		//Création d'un worker
+
+		if(window.Worker){
+		//le navigateur supporte les workers
+				var tripletsWorker = new Worker("js/tripletWorker.js");
+					tripletsWorker.postMessage([jsonTriplets,triplets]);
+		 		console.log('Message posted to worker');
+				tripletsWorker.onmessage=function(event){
+						console.log('Message received from worker : ');
+						triplets2add= event.data;
+							console.log(triplets2add.length);
+			};
+
+
+
+
+		}else{
+		//le navigateur ne supporte pas les workers
+		    alert("Désolé votre navigateur "+
+		        "ne supporte pas les workers ! ☹");
+		}
+
+
+
+
+}
+
+function jsonDataError(data){
+	console.log(data);
+	message(data);
+}
+
+
+
+
+
 function rechercheXML(recherche){
 	    //var path=dbpediaPath+recherche+".json";
-			var query="http://fr.dbpedia.org/sparql?default-graph-uri=http://fr.dbpedia.org&query=DESCRIBE+%3Chttp://fr.dbpedia.org/resource/"+recherche+"%3E&output=application/ld-json";
+		//	var query="http://fr.dbpedia.org/sparql?default-graph-uri=http://fr.dbpedia.org&query=DESCRIBE+%3Chttp://fr.dbpedia.org/resource/"+recherche+"%3E&output=application/ld-json";
 		/*	var query="http://fr.dbpedia.org/sparql?default-graph-uri=http://fr.dbpedia.org&query=";
 			 query+="SELECT * WHERE {";
    			query+="OPTIONAL{  <http://fr.dbpedia.org/resource/"+recherche+"> ?p ?o}\n";

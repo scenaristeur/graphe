@@ -3,9 +3,10 @@ function Noeud (id){
 this.id=id;
 this.img = loadImage("");
 this.imageConst;
-var p = physics.makeParticle( 2.0, random( -width/2+10, width/2-10   ), random( -height/2+10, height/2-10 ), random( -limiteZ, limiteZ ));
-//var p = physics.makeParticle( 1.0, 0,0,0);
-//var p = physics.makeParticle( 2.0, random( -10, 10   ), random( -10, 10 ), random( -10, 10 ));
+//var nbParticules = physics.particles.length*100;
+//var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
+//var p = physics.makeParticle( 2.0, 0,0,0);
+var p = physics.makeParticle( 2.0, random( -10, 10   ), random( -10, 10 ), random( -10, 10 ));
 
 
 this.particule=p;
@@ -18,7 +19,7 @@ this.createImg();
 			r = physics.makeAttraction( noeud.particule, this.particule, -100, 200 );
 }}*/
 
-updateAttractions();
+//updateAttractions();
 }
 Noeud.prototype.createImg = function(){
 //console.log(this.id);

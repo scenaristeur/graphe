@@ -14,18 +14,47 @@ function windowResized() {
 
 // regénère toutes les attractions entre les différentes particules
 function updateAttractions(){
-  physics.attractions = [];
+//  physics.attractions = [];
+if(physics.attractions.length>physics.particles.length){
+  physics.attractions.pop();
+  console.log("POP");
+}
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
-      r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
+    //  r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
     for(var j=0;j<noeuds.length;j++){
+      //console.log(i +" "j);
       var noeudJ=noeuds[j];
+
   	  if(noeudI!=noeudJ){
-  			r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -springLongueur, springLongueur+random(10) );
+        var posI = noeudI.particule.position;
+        var posJ = noeudJ.particule.position;
+        var d = dist(posI.x,posI.y,posI.z, posJ.x,posJ.y,posJ.z);
+
+        //on n'ajoute que si un spring n'existe passer
+        var springExist = false;
+
+        for(var h=0;h<physics.springs.length;h++){
+          var spring=physics.springs[h];
+          var a =spring.a;
+          var b=spring.b;
+          //console.log(a);
+          //console.log(b);
+          if(((a==noeudI.particule) && (b==noeudJ.particule)) || ((b==noeudI.particule) && (a==noeudJ.particule))){
+            springExist = true;
+          //  console.log(springExist);
+            continue;
+          }
+        }
+
+      if ( d<springLongueur*3 && springExist == false){
+                //  console.log(d);
+  			     r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -springLongueur*3, springLongueur );
+         }
       }
     }
   }
-//console.log(physics.attractions);
+console.log(physics.attractions.length);
 }
 
 // initialisation
@@ -123,11 +152,17 @@ function triplets2links(triplets){
 		var objetCourant;
 		var sExist=false;
 		var oExist=false;
-		var triplet=triplets[i];
+		var triplet=triplets.pop();
+    console.log("popy");
+  //  console.log(triplet);
 		var sujet=triplet.sujet;
 		var propriete = triplet.propriete;
 		var objet = triplet.objet;
 		var noeud;
+  //  console.log(sujet);
+  //  console.log(propriete);
+//    console.log(objet);
+
 
 		//verification sujet exist
 		for (var j=0;j<noeuds.length;j++){
@@ -158,9 +193,9 @@ function triplets2links(triplets){
 		s.img = s.imageConst[0];
 		s.IMGtaille = s.imageConst[1];
 		links.push(s);
-	//	console.log(s);
+	//	console.log("S :"+links.length);
 	}
-updateAttractions();
+//updateAttractions();
 }
 
 // CREATION DES IMAGES 2D pour afficher le texte des noeuds et links
@@ -200,6 +235,7 @@ var 	tCtx = textCanvas.getContext('2d');
 
 function changeZoom(event){
 	cameraZ+=event.deltaY;
+  console.log(cameraZ);
 }
 
 function stabilisation(){
@@ -244,6 +280,11 @@ function handleBoundaryCollisions(  p )
 }
 
  particule.position.set( constrain( particule.position.x, -width, width ), constrain( particule.position.y, -height , height ) , constrain( particule.position.z, -limiteZ , limiteZ ) );
+}
+function  handle2DLimite(p){
+    var particule=p;
+ particule.position.set(  particule.position.x, particule.position.y, constrain( particule.position.z, -limiteZ , limiteZ ) );
+
 }
 
 
