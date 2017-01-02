@@ -81,7 +81,11 @@ function setup() {
 function draw(){
 	background(250);
 	camera(cameraX,cameraY,cameraZ);
-
+		  normalMaterial();
+//	strokeWeight(3);
+//	stroke(0);
+//	noFill();
+//fill(255,0,0,50);
 	if(modeCommande == true){
 		commandes();
 	  orbitControl();
@@ -99,7 +103,7 @@ function draw(){
 			message("2D : " + limiteZ);
 			//		stroke('red');
 			//	strokeWeight(4);
-			fill(0,10,0,10);
+		//	fill(0,10,0,10);
  			box(limiteZ);
 		}
 	}else{
@@ -108,19 +112,24 @@ function draw(){
 			limiteZ+=10;
 			modeAff="3D";
 			message("3D : " + limiteZ);
-			fill(0,10,0,10);
+		//	fill(0,10,0,10);
 			box(limiteZ);
 		}
 	}
-  normalMaterial();
+
 
   mouse.position.x = mouseX-width/2;
   mouse.position.y = mouseY-height/2;
   mouse.position.z = 0;
   physics.tick();
 
-  stroke( 0 );
+  //stroke( 2 );
+	//fill(10,0,0,10);
+	//noFill();
+//affichage souris
   ellipse( mouse.position.x, mouse.position.y, 35, 35 );
+
+		//affichage centre 0,0,0, la particule "centre" a pu se déplacer ?
   box( 10 );
 
 	for (i = 0 ; i< physics.particles.length;i++){
@@ -138,7 +147,20 @@ function draw(){
 			}else if (/*(particle.id==sujetValue) ||*/ (particle.id==objetValue)){
 			 	cone(20, 20);
 			}else{
-				sphere(10,100);
+				var d = dist (	mouse.position.x,mouse.position.y,mouse.position.z,particle.position.x,particle.position.y,particle.position.z)
+				if(d<30){
+					ambientLight(255,0,0);
+					pointLight(250, 250, 250, 100, 100, 0);
+					ambientMaterial(250);
+					particle.over = true;
+				}else{
+					particle.over = false;
+				}
+
+
+				sphere(10);
+			//	console.log(s);
+			//	s.mouseOver(test);
 			}
 			if (particle.img!=undefined){
 				rotateX(-rotationX);

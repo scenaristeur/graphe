@@ -43,6 +43,8 @@ function initialisationPhysics(){
 // Try this to see how Euler is faster, but borderline unstable.
 // 500 particles = 24 fps on my machine
 //physics.setIntegrator( ParticleSystem.MODIFIED_EULER );
+// pas encore implémenté dans traer.js
+
   physics = new ParticleSystem(PHYS_GRAVITY ,PHYS_DRAG);
   centre = physics.makeParticle(10,0,0,0);
   mouse = physics.makeParticle();
@@ -290,6 +292,9 @@ if (champsRemplis == 3){
 }
 }
 
+function test(p){
+  console(p);
+}
 /*
 function getClass(obj) {
   if (typeof obj === "undefined")
