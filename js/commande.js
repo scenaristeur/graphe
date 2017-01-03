@@ -111,6 +111,15 @@ function keyPressed() {
          //g pour charger plus de resultats
          continueRequete();
         break;
+        case 66:
+         //b pour panique, lorsque tous les noeuds sont à perpet
+         for (i = 0 ; i< physics.particles.length;i++){
+           var particule = physics.particles[i];
+           SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
+         particule.position.set(random(10), random(20), random(10));
+         console.log(particle.position);
+       }
+        break;
         case 89:
          //y pour exporter les informations, les partager par mail,
          exportRdf();

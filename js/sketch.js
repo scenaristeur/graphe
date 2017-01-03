@@ -150,12 +150,26 @@ if (afficheTout == true){
 		var particle = physics.particles[i];
 		if ((particle.id != "mouse") && (particle.id != "centre")){
 		//	handleBoundaryCollisions( particle );
-		if( deuxD == true){
+		if(deuxD == true){
 		handle2DLimite(particle);
 	}
 			var x=particle.position.x;
 			var y=particle.position.y;
 			var z=particle.position.z;
+			if (isNaN(x)){
+		//		console.log("Houston, we've had a problem here, particle.position is not a number");
+		//		console.log("-"+physics.attractions.length+" "+physics.particles.length+" "+physics.particles[2].position);
+	//	console.log(particle);
+		SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
+		particle.position = new Vector(random(-100,100),random(-100,100),random(-100,100));
+		particle.velocity = new Vector(random(-1,1),random(-1,1),random(-1,1));
+		particle.force = new Vector(random(-1,1),random(-1,1),random(-1,1));
+		handle2DLimite(particle);
+		 x=particle.position.x;
+		 y=particle.position.y;
+		 z=particle.position.z;
+
+			}
 			var taille=particle.mass;
 			push();
 	  	translate( x, y ,z );
@@ -259,9 +273,10 @@ if(triplets2add.length == 0){
 
 	gereAttractions();
 }
+/*
 if (physics.attractions.length>0){
 console.log(physics.attractions.length);
-}
+}*/
 }
 
 

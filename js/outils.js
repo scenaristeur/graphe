@@ -328,7 +328,6 @@ function handleBoundaryCollisions(  p )
 function  handle2DLimite(p){
     var particule=p;
  particule.position.set(  constrain( particule.position.x, -width*100, width*100 ), constrain( particule.position.y, -height*100 , height*100 ) ,  constrain( particule.position.z, -limiteZ , limiteZ ) );
-
 }
 
 
