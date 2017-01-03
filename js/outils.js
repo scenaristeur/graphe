@@ -309,11 +309,11 @@ function handleBoundaryCollisions(  p )
 {
   var particule=p;
 
-  if ( particule.position.x < -width || particule.position.x > width ){
+  if ( particule.position.x < -width|| particule.position.x > width ){
     particule.velocity.set( -0.5*particule.velocity.x, particule.velocity.y, particule.velocity.z );
   //  console.log(particule);
   }
-  if ( particule.position.y < -height  || particule.position.y > height ){
+  if ( particule.position.y < -height  || particule.position.y> height ){
   particule.velocity.set( particule.velocity.x, -0.5*particule.velocity.y, particule.velocity.z  );
 //console.log(particule);
   }
@@ -323,11 +323,11 @@ function handleBoundaryCollisions(  p )
   //    console.log(particule.id);
 }
 
- particule.position.set( constrain( particule.position.x, -width, width ), constrain( particule.position.y, -height , height ) , constrain( particule.position.z, -limiteZ , limiteZ ) );
+ particule.position.set( constrain( particule.position.x, -width*100, width*100 ), constrain( particule.position.y, -height*100 , height*100 ) , constrain( particule.position.z, -limiteZ , limiteZ ) );
 }
 function  handle2DLimite(p){
     var particule=p;
- particule.position.set(  particule.position.x, particule.position.y, constrain( particule.position.z, -limiteZ , limiteZ ) );
+ particule.position.set(  constrain( particule.position.x, -width*100, width*100 ), constrain( particule.position.y, -height*100 , height*100 ) ,  constrain( particule.position.z, -limiteZ , limiteZ ) );
 
 }
 
