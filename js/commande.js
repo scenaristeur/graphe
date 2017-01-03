@@ -111,6 +111,14 @@ function keyPressed() {
          //g pour charger plus de resultats
          continueRequete();
         break;
+        case 89:
+         //y pour exporter les informations, les partager par mail,
+         exportRdf();
+        break;
+        case 85:
+         //u pour importer des informations (charger un fichier)
+         importRdf();
+        break;
        case 72:
         // h pour afficher l'aide
         message (defautMessage);

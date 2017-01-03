@@ -380,6 +380,16 @@ if (champsRemplis == 3){
 function test(p){
   console(p);
 }
+
+function importRdf(){
+  message("la fontion importRDF n'est pas encore implémentée");
+}
+
+function exportRdf(){
+  message("la fontion exportRDF n'est pas encore implémentée");
+}
+
+
 /*
 function getClass(obj) {
   if (typeof obj === "undefined")
