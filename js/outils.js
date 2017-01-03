@@ -17,7 +17,7 @@ function updateAttractions(){
 //  physics.attractions = [];
 if(physics.attractions.length>physics.particles.length){
   physics.attractions.pop();
-  console.log("POP");
+//  console.log("POP");
 }
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
@@ -33,7 +33,6 @@ if(physics.attractions.length>physics.particles.length){
 
         //on n'ajoute que si un spring n'existe passer
         var springExist = false;
-
         for(var h=0;h<physics.springs.length;h++){
           var spring=physics.springs[h];
           var a =spring.a;
@@ -47,14 +46,41 @@ if(physics.attractions.length>physics.particles.length){
           }
         }
 
-      if ( d<springLongueur*3 && springExist == false){
+        //on n'ajoute que si une attraction n'existe passer
+        var attExist = false;
+        for(var h=0;h<physics.attractions.length;h++){
+          var att=physics.attractions[h];
+          var a1 =att.a;
+          var b1=att.b;
+          //console.log(a);
+          //console.log(b);
+          if(((a1==noeudI.particule) && (b1==noeudJ.particule)) || ((b1==noeudI.particule) && (a1==noeudJ.particule))){
+            attExist = true;
+          //  console.log(springExist);
+          /*affichage des attractions pour debug possible aussi de faire une ligne pour les visualiser car posent problèmes de ralentissement si trop importantes,
+          sont supprimées dans la fonction gereAttraction() --> trouver un équilibre
+
+          push();
+          translate(a1.position.x,a1.position.y,a1.position.z);
+          sphere(35);
+          pop();
+          push();
+          translate(b1.position.x,b1.position.y,b1.position.z);
+          sphere(35);
+          pop(); */
+            continue;
+          }
+        }
+
+      if ( d<springLongueur && springExist == false && attExist == false){
                 //  console.log(d);
-  			     r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -springLongueur*3, springLongueur );
+
+  			    r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -40, springLongueur*1.5 );
          }
       }
     }
   }
-console.log(physics.attractions.length);
+
 }
 
 // initialisation
@@ -143,7 +169,21 @@ function remplissageDataTest(){
   	//	console.log(triplets);
 }
 
-
+function splitUri(uri){
+  var result = [];
+  result = uri.split("#");
+  console.log(result);
+  if (result.length != 2){
+    var rest = uri.substring(0, uri.lastIndexOf("/") + 1);
+    var last = uri.substring(uri.lastIndexOf("/") + 1, uri.length);
+  //  console.log(rest);
+  //  console.log(last);
+    result[0]=last;
+    result[1]=rest;
+  //  console.log(result);
+  }
+  return result;
+}
 // triplets to links, change les triplets en liens
 
 function triplets2links(triplets){
@@ -153,43 +193,47 @@ function triplets2links(triplets){
 		var sExist=false;
 		var oExist=false;
 		var triplet=triplets.pop();
-    console.log("popy");
+  //  console.log("popy");
   //  console.log(triplet);
-		var sujet=triplet.sujet;
-		var propriete = triplet.propriete;
-		var objet = triplet.objet;
+		var sujetUri=triplet.sujet;
+		var proprieteUri = triplet.propriete;
+		var objetUri = triplet.objet;
 		var noeud;
-  //  console.log(sujet);
-  //  console.log(propriete);
-//    console.log(objet);
 
+var sujet = splitUri(sujetUri);
+var propriete = splitUri(proprieteUri);
+var objet = splitUri(objetUri);
+
+//  console.log(sujet);
+//  console.log(propriete);
+  //  console.log(objet);
 
 		//verification sujet exist
 		for (var j=0;j<noeuds.length;j++){
 			noeud = noeuds[j];
 		//	console.log(noeud);
-			if (noeud.id==sujet){
+			if (noeud.id==sujet[0]){
 				sujetCourant=noeud;
 				sExist=true;
 			}
-			if (noeud.id==objet){
+			if (noeud.id==objet[0]){
 				objetCourant=noeud;
 				oExist=true;
 			}
 		}
 
 		if(sExist == false){
-			sujetCourant = new Noeud(sujet);
+			sujetCourant = new Noeud(sujet[0],sujet[1]);
 			noeuds.push(sujetCourant);
 		}
 
 		if(oExist == false){
-			objetCourant = new Noeud(objet);
+			objetCourant = new Noeud(objet[0],objet[1]);
 			noeuds.push(objetCourant);
 		}
 //	console.log(noeuds);
-		s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH+(random(SPRING_STRENGTH)), 0.01, springLongueur+random(springLongueur), propriete ); // force , damping, longueur
-		s.imageConst = constructImage(propriete);
+		s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH+(random(SPRING_STRENGTH)), 0.01, springLongueur+random(springLongueur), propriete[0] ); // force , damping, longueur
+		s.imageConst = constructImage(propriete[0]);
 		s.img = s.imageConst[0];
 		s.IMGtaille = s.imageConst[1];
 		links.push(s);
@@ -235,7 +279,7 @@ var 	tCtx = textCanvas.getContext('2d');
 
 function changeZoom(event){
 	cameraZ+=event.deltaY;
-  console.log(cameraZ);
+//  console.log(cameraZ);
 }
 
 function stabilisation(){

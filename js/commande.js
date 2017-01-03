@@ -66,8 +66,8 @@ function keyPressed() {
         //d pour DEBUG
         console.log(physics);
        break;*/
-       case 77:
-        //m pour basculer afficheTout
+       case 79:
+        //o pour basculer afficheTout
         afficheTout = !afficheTout;
         console.log(afficheTout);
        break;
@@ -81,7 +81,12 @@ function keyPressed() {
         // ! pour passer de 2D à 3D
         deuxD=!deuxD;
         SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
-        noeuds[0].particule.position.set(noeuds[0].particule.position.x,noeuds[0].particule.position.y,noeuds[0].particule.position.z+10);
+        if(deuxD == false){
+        for (i = 0 ; i< physics.particles.length;i++){
+          var particule = physics.particles[i];
+        particule.position.set(particule.position.x,particule.position.y,particule.position.z+random(-10,10));
+      }
+    }
        break;
        case 70:
         // f pour charger des données
@@ -148,13 +153,13 @@ function keyPressed() {
         updateAttractions();
         message("springLongueur : "+springLongueur);
       break;
-      case 186:
-        //$ pour augmenter la force des springs
+      case 77:
+        //m pour augmenter la force des springs
         SPRING_STRENGTH=SPRING_STRENGTH/2 ;
         message("SPRING_STRENGTH : "+SPRING_STRENGTH);
       break;
-      case 221:
-        //^ pour diminuer la force des springs
+      case 76:
+        //l pour diminuer la force des springs
         SPRING_STRENGTH=SPRING_STRENGTH*2 ;
         message("SPRING_STRENGTH : "+SPRING_STRENGTH);
       break;

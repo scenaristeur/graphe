@@ -1,12 +1,14 @@
-function Noeud (id){
+function Noeud (id,prefix){
 //	console.log(this);
 this.id=id;
+this.prefix=prefix;
+	console.log(this);
 this.img = loadImage("");
 this.imageConst;
-//var nbParticules = physics.particles.length*100;
+var nbParticules = physics.particles.length;
 //var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
 //var p = physics.makeParticle( 2.0, 0,0,0);
-var p = physics.makeParticle( 2.0, random( -10, 10   ), random( -10, 10 ), random( -10, 10 ));
+var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
 
 
 this.particule=p;

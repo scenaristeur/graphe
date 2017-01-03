@@ -11,10 +11,12 @@ var inputSujet;
 var inputProp;
 var inputObjet;
 var modeCommande = true;
-var defautMessage = "Echap = mode Commande, i mode Insertion, [[<a href='https://github.com/scenaristeur/graphe' target='_blank'>Code source</a>]]</br>";
-defautMessage+= "* et ù pour zoomer, $ et ^ pour la force des ressorts, : et ; pour la longueur des ressorts, voir toutes les <a href='js/commande.js' target='_blank'>autres commandes</a></br>";
-defautMessage+=" espace pour reinitialiser la camera,  clic pour tourner, fleches pour se déplacer , n pour un nouveau graphe,  </br>";
-defautMessage+=" touche ! pour passer en 2D/3D, et les trois champs ci-dessous pour ajouter <a href='https://fr.wikipedia.org/wiki/Resource_Description_Framework' target='-blank'>un triplet RDF</a>";
+var defautMessage = "Echap = mode Commande, i = mode Insertion. En mode commande  : h pour afficher cette aide,  </br> ";
+defautMessage+= "* et ù ou roulette pour zoomer, m et l pour la force des ressorts, : et ; pour la longueur des ressorts, + et - pour accelérer, ralentir les déplacements </br>";
+defautMessage+=" espace pour reinitialiser la camera,  clic ou a,z,q,s,w,x,e,d,c pour tourner, fleches pour se déplacer, n pour un nouveau graphe,  </br>";
+defautMessage+=" touche ! pour passer en 2D/3D, et les trois champs ci-dessous pour ajouter <a href='https://fr.wikipedia.org/wiki/Resource_Description_Framework' target='-blank'>un triplet RDF</a></br>";
+defautMessage+= "f pour charger les dix premières infos depuis un endpoint (serveur) sparql (valider deux fois pour le endpoint et la requete), g pour charger les dix suivantes et ggggggggg pour en charger plein </br>"
+defautMessage+="[[<a href='js/commande.js' target='_blank'>Commandes</a>]][[<a href='https://github.com/scenaristeur/graphe' target='_blank'>Code source</a>]]";
 var rotationX = 0,rotationY = 0,rotationZ = 0;
 var font = '36pt Times';
 var afficheTout = true;
@@ -52,21 +54,21 @@ var mouse,b,c =new Particle();
 function setup() {
 	//CANVAS
 	divMessages = createDiv(defautMessage);
-	divMessages.position(0,0);
+	divMessages.position(10,10);
 
 	inputSujet = createInput('');
   inputSujet.input(inputSujetEvent);
-	inputSujet.position(0,100);
+	inputSujet.position(10,130);
 	inputSujet.attribute('id', 'inputSujet');
 
 	inputProp = createInput('');
 	inputProp.input(inputPropEvent);
- 	inputProp.position( inputSujet.width,100);
+ 	inputProp.position( inputSujet.width,130);
 	inputProp.attribute('id', 'inputProp');
 
 	inputObjet = createInput('');
 	inputObjet.input(inputObjetEvent);
-	inputObjet.position(2*inputSujet.width,100);
+	inputObjet.position(2*inputSujet.width,130);
 	inputObjet.attribute('id', 'inputObjet');
 
 
@@ -257,8 +259,9 @@ if(triplets2add.length == 0){
 
 	gereAttractions();
 }
-
-
+if (physics.attractions.length>0){
+console.log(physics.attractions.length);
+}
 }
 
 
@@ -274,7 +277,7 @@ function gereAttractions(){
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
 		//console.log(physics.attractions.length+" "+d);
-		if (d>(springLongueur*3)){
+		if (d>(springLongueur*1.5)){
 			att2remove.push(att);
 		}
 
