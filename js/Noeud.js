@@ -5,10 +5,11 @@ this.prefix=prefix;
 	console.log(this);
 this.img = loadImage("");
 this.imageConst;
-var nbParticules = physics.particles.length;
-//var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
-//var p = physics.makeParticle( 2.0, 0,0,0);
+var nbParticules = physics.particles.length*10;
 var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
+//var p = physics.makeParticle( 2.0, random(-1000,1000),random(-1000,1000),random(-1000,1000));
+//console.log(pos);
+
 
 
 this.particule=p;

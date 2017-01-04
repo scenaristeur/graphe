@@ -22,7 +22,6 @@ var font = '36pt Times';
 var afficheTout = true;
 var triplets2add =[];
 
-
 // DONNEES
 var sujetValue;
 var propValue;
@@ -30,6 +29,8 @@ var objetValue;
 var triplets = [];
 var noeuds = [];
 var links = [];
+//var inputFile;
+	var loadSourceInput;
 
 //SPARQL
 var endpoints = [];
@@ -53,6 +54,11 @@ var mouse,b,c =new Particle();
 
 function setup() {
 	//CANVAS
+	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+  canvas.attribute('id', 'canvas');
+	canvas.mouseWheel(changeZoom);
+	canvas.touchStarted(toucheStart);
+
 	divMessages = createDiv(defautMessage);
 	divMessages.position(10,10);
 
@@ -72,10 +78,33 @@ function setup() {
 	inputObjet.attribute('id', 'inputObjet');
 
 
-	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-  canvas.attribute('id', 'canvas');
-	canvas.mouseWheel(changeZoom);
-	canvas.touchStarted(toucheStart);
+var fileSelect = createFileInput(handleFile);
+fileSelect.position(10, 150);
+//	input = createFileInput(handleFile);  //http://p5js.org/reference/#/p5/createFileInput    createFileInput([callback],[multiple]) https://github.com/processing/p5.js/issues/370
+//	input.position(10, 150);
+/*	loadSourceInput=document.createElement("INPUT");
+     loadSourceInput.setAttribute('id', 'file');
+     loadSourceInput.setAttribute('type', 'file');
+  //   loadSourceInput.multiple=true;
+	//	 loadSourceInput.style.left=10;
+	//	 loadSourceInput.style.top=150;
+
+		 loadSourceInput.addEventListener('change', function() {
+		var listeFichiers=this.files;
+		console.log(this.files);
+
+		for (i=0; i<listeFichiers.length; i++) {
+				var fichier=listeFichiers[i];
+
+				//  var fichierAgent = new FichierAgent('fichierAgent'+i);
+				//   console.log(fichier);
+				handleFile(fichier);
+				//     fichierAgent.send('contexte1', "Hello contexte1, peux-tu rajouter le fichier ' "+fichier.name+" ' dans l'interface pour suivre son traitement");
+		}
+});*/
+
+
+
 
 	initialisationPhysics();
 	initialisationData();
@@ -188,7 +217,7 @@ if (afficheTout == true){
 					particle.over = false;
 				}
 
-
+//console.log(taille);
 				sphere(10);
 			//	console.log(s);
 			//	s.mouseOver(test);
@@ -252,7 +281,7 @@ if (afficheTout == true){
 	}
 
 
-while(triplets2add.length){
+if(triplets2add.length>0){
 	var lim=min(10,triplets2add.length);
 		for (var l=0;l<lim;l++){
 			var t=triplets2add.pop();
@@ -263,8 +292,8 @@ while(triplets2add.length){
 
 		}
 			console.log(triplets2add.length+" "+triplets.length);
-			triplets2links(triplets);
-			updateAttractions();
+		triplets2links(triplets);
+	//updateAttractions();
 
 
 }
@@ -272,11 +301,12 @@ if(triplets2add.length == 0){
 	//	continueRequete();
 
 	gereAttractions();
+
 }
-/*
+
 if (physics.attractions.length>0){
-console.log(physics.attractions.length);
-}*/
+console.log("springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
+}
 }
 
 
@@ -292,7 +322,7 @@ function gereAttractions(){
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
 		//console.log(physics.attractions.length+" "+d);
-		if (d>(springLongueur*1.5)){
+		if (d>(springLongueur*2)){
 			att2remove.push(att);
 		}
 

@@ -19,6 +19,7 @@ if(physics.attractions.length>physics.particles.length){
   physics.attractions.pop();
 //  console.log("POP");
 }
+//if(physics.attractions.length<200){
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
     //  r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
@@ -72,15 +73,16 @@ if(physics.attractions.length>physics.particles.length){
           }
         }
 
-      if ( d<springLongueur && springExist == false && attExist == false){
-                //  console.log(d);
+      if ( d<springLongueur && springExist == false && attExist == false ){
+              //   console.log(d);
 
-  			    r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -40, springLongueur*1.5 );
+  			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );
          }
       }
-    }
-  }
+  //  }
 
+}
+}
 }
 
 // initialisation
@@ -172,7 +174,7 @@ function remplissageDataTest(){
 function splitUri(uri){
   var result = [];
   result = uri.split("#");
-  console.log(result);
+//  console.log(result);
   if (result.length != 2){
     var rest = uri.substring(0, uri.lastIndexOf("/") + 1);
     var last = uri.substring(uri.lastIndexOf("/") + 1, uri.length);
@@ -187,6 +189,7 @@ function splitUri(uri){
 // triplets to links, change les triplets en liens
 
 function triplets2links(triplets){
+  inc=2*3.14/triplets.length;
 	for (var i=0;i<triplets.length;i++){
 		var sujetCourant;
 		var objetCourant;
@@ -209,15 +212,16 @@ var objet = splitUri(objetUri);
   //  console.log(objet);
 
 		//verification sujet exist
+
 		for (var j=0;j<noeuds.length;j++){
 			noeud = noeuds[j];
-		//	console.log(noeud);
 			if (noeud.id==sujet[0]){
 				sujetCourant=noeud;
 				sExist=true;
 			}
 			if (noeud.id==objet[0]){
 				objetCourant=noeud;
+
 				oExist=true;
 			}
 		}
@@ -225,14 +229,19 @@ var objet = splitUri(objetUri);
 		if(sExist == false){
 			sujetCourant = new Noeud(sujet[0],sujet[1]);
 			noeuds.push(sujetCourant);
+
 		}
 
 		if(oExist == false){
 			objetCourant = new Noeud(objet[0],objet[1]);
 			noeuds.push(objetCourant);
+
 		}
 //	console.log(noeuds);
-		s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH+(random(SPRING_STRENGTH)), 0.01, springLongueur+random(springLongueur), propriete[0] ); // force , damping, longueur
+  sujetCourant.particule.mass++;
+  objetCourant.particule.mass++;
+  var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
+		s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
 		s.imageConst = constructImage(propriete[0]);
 		s.img = s.imageConst[0];
 		s.IMGtaille = s.imageConst[1];
@@ -388,6 +397,50 @@ function exportRdf(){
   message("la fontion exportRDF n'est pas encore implémentée");
 }
 
+function gotFile(file) {
+  var fileDiv = createDiv(file.name + ' ' + file.type + ' ' + file.subtype + ' ' + file.size + ' bytes');
+  // Check what kind of file it is
+/*  if (file.type === 'image') {
+    // Make an Image DOM element
+    var img = createImg(file.data);
+  } else if (file.type === 'text') {
+    // Pull out some text, etc.
+    createDiv(file.data);
+  }*/
+  switch(file.type) {
+  /*  case "rdf+xml":
+        console.log("fichier RDF"); //https://github.com/scenaristeur/dreamcatcherAutonome/blob/8376cb5211095a90314e34e9d286b820fbed335b/autonome1/public/agents/FichierAgent.js
+
+         rdf2Xml2(file.data);
+        break;*/
+    default:
+      console.log("ce type de fichier n'est pas pris en compte ("+file.type+" "+file.subtype+")");
+}
+
+}
+
+
+function handleFile(file) {
+  print(file);
+  // if (file.type === 'image') { img = createImg(file.data); img.hide();
+console.log(file.type+" "+file.subtype);
+//console.log(file.data);
+switch(file.subtype) {
+  //https://github.com/scenaristeur/dreamcatcherAutonome/blob/8376cb5211095a90314e34e9d286b820fbed335b/autonome/public/js/conversion.js
+    case "rdf+xml":
+        console.log("fichier RDF"); //https://github.com/scenaristeur/dreamcatcherAutonome/blob/8376cb5211095a90314e34e9d286b820fbed335b/autonome1/public/agents/FichierAgent.js
+
+         rdf2Xml2(file.data);
+        break;
+    case "turtle":
+          console.log("fichier turtle");
+        ttl2Xml(file.data);
+        break;
+    default:
+      console.log("ce type de fichier n'est pas pris en compte ("+file.subtype+")");
+}
+
+    }
 
 /*
 function getClass(obj) {

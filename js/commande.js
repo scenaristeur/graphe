@@ -117,7 +117,7 @@ function keyPressed() {
            var particule = physics.particles[i];
            SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
          particule.position.set(random(10), random(20), random(10));
-         console.log(particle.position);
+         console.log(particule.position);
        }
         break;
         case 89:
