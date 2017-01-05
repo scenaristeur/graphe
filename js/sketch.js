@@ -43,11 +43,11 @@ var physics;
 var PHYS_GRAVITY = 0;
 var PHYS_DRAG_DEFAULT = 0.05;
 var PHYS_DRAG = PHYS_DRAG_DEFAULT;
-var SPRING_STRENGTH_DEFAULT = 0.0001; //0.01
+var SPRING_STRENGTH_DEFAULT = 0.001; //0.01
 var SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
-var springLongueurDefault=75;
+var springLongueurDefault=120;
 var springLongueur=springLongueurDefault;
-var seuilAtt=springLongueur*3;
+//var seuilAtt=springLongueur*3;
 var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
 var mouse,b,c =new Particle();
@@ -227,7 +227,7 @@ if (afficheTout == true){
 				rotateX(-rotationX);
 				rotateY(-rotationY);
 				rotateZ(-rotationZ);
-				translate( taille+10, taille+10 ,0 );
+				translate( 10, 10 ,0 );
 				texture(particle.img);
 				plane(particle.IMGtaille, 20);
 				normalMaterial();
@@ -282,7 +282,7 @@ if (afficheTout == true){
 	}
 
 
-if((triplets2add.length>0) && (physics.attractions.length<3*physics.particles.length)){
+if((triplets2add.length>0) ){
 	var lim=min(10,triplets2add.length);
 		for (var l=0;l<lim;l++){
 			var t=triplets2add.pop();
@@ -290,7 +290,7 @@ if((triplets2add.length>0) && (physics.attractions.length<3*physics.particles.le
 			var triplet = new Triplet(t.sujet,t.propriete,t.objet);
 			triplets.push(triplet);
 		//	triplets2links(triplets);
-		console.log(triplets2add.length+" "+triplets.length);
+		//console.log(triplets2add.length+" "+triplets.length);
 	triplets2links(triplets);
 		}
 
@@ -298,12 +298,12 @@ if((triplets2add.length>0) && (physics.attractions.length<3*physics.particles.le
 
 
 }
-if(triplets2add.length == 0){
+//if(triplets2add.length == 0){
 	//	continueRequete();
 
 	gereAttractions();
 
-}
+//}
 
 if (physics.attractions.length>0){
 console.log(triplets2add.length+"springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
@@ -325,6 +325,7 @@ function gereAttractions(){
 		//console.log(physics.attractions.length+" "+d);
 		if (d>(hypothenuse)){
 			att2remove.push(att);
+			console.log("rem");
 		}
 
 	}

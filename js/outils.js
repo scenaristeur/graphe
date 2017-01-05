@@ -58,6 +58,15 @@ if(physics.attractions.length>physics.particles.length){
           //console.log(b);
           if(((a1==noeudI.particule) && (b1==noeudJ.particule)) || ((b1==noeudI.particule) && (a1==noeudJ.particule))){
             attExist = true;
+          /*  push();
+            translate(posI.x,posI.y,posI.z);
+            sphere(30);
+            pop();
+
+            push();
+            translate(posJ.x,posJ.y,posJ.z);
+            sphere(30);
+            pop();*/
           //  console.log(springExist);
           /*affichage des attractions pour debug possible aussi de faire une ligne pour les visualiser car posent problèmes de ralentissement si trop importantes,
           sont supprimées dans la fonction gereAttraction() --> trouver un équilibre
@@ -75,10 +84,12 @@ if(physics.attractions.length>physics.particles.length){
         }
         //console.log(hypothenuse);
       if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
-            //    console.log(d);
+               console.log("add");
 
   			  // r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, springLongueur*2.4 );
-          			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, hypothenuse);
+          			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
+
+
          }
       }
   //  }
@@ -240,11 +251,14 @@ var objet = splitUri(objetUri);
 
 		}
 //	console.log(noeuds);
-  sujetCourant.particule.mass++;
-  objetCourant.particule.mass++;
-  var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
-		s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
-		s.imageConst = constructImage(propriete[0]);
+  //sujetCourant.particule.mass++;
+  //objetCourant.particule.mass++;
+  //var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
+	//	s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
+  s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH, 0.1, springLongueur, propriete[0] ); // force , damping, longueur
+
+
+  	s.imageConst = constructImage(propriete[0]);
 		s.img = s.imageConst[0];
 		s.IMGtaille = s.imageConst[1];
 		links.push(s);

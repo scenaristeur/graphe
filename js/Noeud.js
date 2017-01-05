@@ -2,19 +2,19 @@ function Noeud (id,prefix){
 //	console.log(this);
 this.id=id;
 this.prefix=prefix;
-	console.log(this);
+
 this.img = loadImage("");
 this.imageConst;
 var nbParticules = physics.particles.length*10;
-var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
-//var p = physics.makeParticle( 2.0, random(-1000,1000),random(-1000,1000),random(-1000,1000));
+//var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
+var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
 //console.log(pos);
-
+//console.log(this);
 
 
 this.particule=p;
 p.id=this.id;
-this.createImg();
+//this.createImg();
 //r1 = physics.makeAttraction( centre, this.particule, 100, 200 );
 /*for(var i=0;i<noeuds.length;i++){
 	var noeud=noeuds[i];
