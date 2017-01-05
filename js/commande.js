@@ -161,12 +161,14 @@ function keyPressed() {
       case 191:
         //: pour allonger la longueur des springs / ressorts
         springLongueur=springLongueur+10 ;
+      hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
         updateAttractions();
          message("springLongueur : "+springLongueur);
       break;
       case 190:
         //; pour raccourcir les liens
         springLongueur=max(0,springLongueur-10) ;
+        hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
         updateAttractions();
         message("springLongueur : "+springLongueur);
       break;

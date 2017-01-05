@@ -15,6 +15,7 @@ function windowResized() {
 // regénère toutes les attractions entre les différentes particules
 function updateAttractions(){
 //  physics.attractions = [];
+
 if(physics.attractions.length>physics.particles.length){
   physics.attractions.pop();
 //  console.log("POP");
@@ -72,11 +73,12 @@ if(physics.attractions.length>physics.particles.length){
             continue;
           }
         }
+        //console.log(hypothenuse);
+      if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
+            //    console.log(d);
 
-      if ( d<springLongueur && springExist == false && attExist == false ){
-              //   console.log(d);
-
-  			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );
+  			  // r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, springLongueur*2.4 );
+          			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, hypothenuse);
          }
       }
   //  }
