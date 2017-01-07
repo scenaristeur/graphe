@@ -30,7 +30,10 @@ var triplets = [];
 var noeuds = [];
 var links = [];
 //var inputFile;
-	var loadSourceInput;
+var loadSourceInput;
+var paramSujet;
+var paramPropriete;
+var paramObjet;
 
 //SPARQL
 var endpoints = [];
@@ -54,6 +57,10 @@ var mouse,b,c =new Particle();
 //var inputLongueur;
 
 function setup() {
+	var query = getQueryParams(document.location.search);
+	paramSujet=query.sujet;
+	paramPropriete = query.propriete;
+	paramObjet = query.objet;
 	//CANVAS
 	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.attribute('id', 'canvas');
@@ -108,8 +115,13 @@ fileSelect.position(10, 150);
 
 
 	initialisationPhysics();
-	initialisationData();
-	remplissageDataTest();
+			initialisationData();
+	if ((typeof paramSujet == "undefined") && (typeof paramPropriete == "undefined") && (typeof paramObjet == "undefined") ){
+			remplissageDataTest();
+	}else{
+		rechercheFromParam(paramSujet,paramPropriete,paramObjet);
+	}
+console.log(triplets);
 	triplets2links(triplets);
 	updateAttractions();
 }
@@ -304,10 +316,10 @@ if((triplets2add.length>0) ){
 	gereAttractions();
 
 //}
-
+/*
 if (physics.attractions.length>0){
 console.log(triplets2add.length+"springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
-}
+}*/
 }
 
 
@@ -325,7 +337,7 @@ function gereAttractions(){
 		//console.log(physics.attractions.length+" "+d);
 		if (d>(hypothenuse)){
 			att2remove.push(att);
-			console.log("rem");
+		//	console.log("rem");
 		}
 
 	}
@@ -382,11 +394,46 @@ function jsonDataOk(data){
 		console.log(data.head.vars);
 			console.log(data.results.bindings);
 			var jsonTriplets = data.results.bindings;
-
+//[jsonTriplets,triplets]
 
 		//Création d'un worker
 
-		if(window.Worker){
+
+//	  var noeuds = e.data[2];
+	  console.log(paramSujet);
+	console.log(paramPropriete);
+	console.log(paramObjet);
+
+	  for  (var i=0; i< jsonTriplets.length;i++){
+	    var jsonTriplet = jsonTriplets[i];
+			console.log(jsonTriplet)
+	    var sujetTemp;
+	    var propTemp;
+	    var objetTemp;
+	    if(typeof jsonTriplet.Sujet == "undefined"){
+	      sujetTemp = "http://smag0.blogspot.fr/NS#"+paramSujet;
+	    }else{
+	      sujetTemp = jsonTriplet.Sujet.value;
+	    }
+	    if(typeof jsonTriplet.Predicat == "undefined"){
+	      propTemp = "http://smag0.blogspot.fr/NS#"+paramPropriete;
+	    }else{
+	      propTemp = jsonTriplet.Predicat.value;
+	    }
+	    if(typeof jsonTriplet.Objet == "undefined"){
+	      objetTemp = "http://smag0.blogspot.fr/NS#"+paramObjet;
+	    }else{
+	      objetTemp = jsonTriplet.Objet.value;
+	    }
+	    var triplet = new Triplet(sujetTemp,propTemp,objetTemp);
+	    triplets.push(triplet);
+			console.log(triplet);
+	  }
+	  console.log(i+"/"+jsonTriplets.length);
+		console.log(triplets);
+			triplets2links(triplets);
+			updateAttractions();
+	/*	if(window.Worker){
 		//le navigateur supporte les workers
 				var tripletsWorker = new Worker("js/tripletWorker.js");
 					tripletsWorker.postMessage([jsonTriplets,triplets]);
@@ -404,7 +451,7 @@ function jsonDataOk(data){
 		//le navigateur ne supporte pas les workers
 		    alert("Désolé votre navigateur "+
 		        "ne supporte pas les workers ! ☹");
-		}
+		}*/
 
 
 

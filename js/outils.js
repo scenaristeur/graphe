@@ -7,6 +7,20 @@ function message(texte){
     divMessages.elt.innerHTML=texte+" </br> 'Echap' + 'h' pour afficher l'aide";
 }
 
+function getQueryParams(qs) {
+    qs = qs.split('+').join(' ');
+
+    var params = {},
+        tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+
+    while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+    }
+
+    return params;
+}
+
 // redimensionne le canvas
 function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
@@ -84,7 +98,7 @@ if(physics.attractions.length>physics.particles.length){
         }
         //console.log(hypothenuse);
       if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
-               console.log("add");
+          //     console.log("add");
 
   			  // r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, springLongueur*2.4 );
           			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
@@ -184,17 +198,63 @@ function remplissageDataTest(){
   	//	console.log(triplets);
 }
 
+function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
+  console.log(paramSujet);
+  console.log(paramPropriete);
+  console.log(paramObjet);
+
+
+
+  var prefixSmag = "PREFIX+smag%3A++++<http%3A%2F%2Fsmag0.blogspot.fr%2FNS%23>%0D%0A";
+
+
+  console.log();
+
+  if ( typeof paramSujet == "undefined"){
+    paramSujet = "?Sujet";
+  }else{
+      paramSujet = paramSujet.charAt(0).toUpperCase() + paramSujet.slice(1);
+    paramSujet = "smag:"+paramSujet;
+  }
+  if( typeof paramPropriete == "undefined"){
+    paramPropriete = "?Predicat";
+    console.log("####################"+paramPropriete);
+  }else{
+    paramPropriete = "smag:"+paramPropriete;
+  }
+  if( typeof paramObjet == "undefined"){
+
+    paramObjet = "?Objet";
+  }else{
+          paramObjet = paramObjet.charAt(0).toUpperCase() + paramObjet.slice(1);
+    paramObjet = "smag:"+paramObjet;
+  }
+
+
+
+  var endpointAsk = "https://rdf-smag0.rhcloud.com/ds/query";
+  var queryAsk = prefixSmag;
+	queryAsk += "select+*+where+%7B"+paramSujet+"+"+paramPropriete+"+"+paramObjet+"%7D+LIMIT"+limiteSparql+"OFFSET"+offsetSparql+"&output=json";
+	query=endpointAsk+"?query="+queryAsk;
+			message (query);
+			console.log(query);
+			envoiJSONQuery(query);
+
+}
+
+
+
 function splitUri(uri){
   var result = [];
   result = uri.split("#");
-//  console.log(result);
+ console.log(result);
   if (result.length != 2){
     var rest = uri.substring(0, uri.lastIndexOf("/") + 1);
     var last = uri.substring(uri.lastIndexOf("/") + 1, uri.length);
-  //  console.log(rest);
-  //  console.log(last);
-    result[0]=last;
-    result[1]=rest;
+   console.log(rest);
+  console.log(last);
+    result[0]=rest;
+    result[1]=last;
   //  console.log(result);
   }
   return result;
@@ -210,7 +270,7 @@ function triplets2links(triplets){
 		var oExist=false;
 		var triplet=triplets.pop();
   //  console.log("popy");
-  //  console.log(triplet);
+//   console.log(triplet);
 		var sujetUri=triplet.sujet;
 		var proprieteUri = triplet.propriete;
 		var objetUri = triplet.objet;
@@ -222,17 +282,17 @@ var objet = splitUri(objetUri);
 
 //  console.log(sujet);
 //  console.log(propriete);
-  //  console.log(objet);
+//  console.log(objet);
 
 		//verification sujet exist
 
 		for (var j=0;j<noeuds.length;j++){
 			noeud = noeuds[j];
-			if (noeud.id==sujet[0]){
+			if (noeud.id==sujet[1]){
 				sujetCourant=noeud;
 				sExist=true;
 			}
-			if (noeud.id==objet[0]){
+			if (noeud.id==objet[1]){
 				objetCourant=noeud;
 
 				oExist=true;
@@ -242,7 +302,6 @@ var objet = splitUri(objetUri);
 		if(sExist == false){
 			sujetCourant = new Noeud(sujet[0],sujet[1]);
 			noeuds.push(sujetCourant);
-
 		}
 
 		if(oExist == false){
@@ -250,7 +309,9 @@ var objet = splitUri(objetUri);
 			noeuds.push(objetCourant);
 
 		}
-//	console.log(noeuds);
+//console.log(sujetCourant);
+//console.log(objetCourant)
+  console.log(noeuds);
   //sujetCourant.particule.mass++;
   //objetCourant.particule.mass++;
   //var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
@@ -258,7 +319,7 @@ var objet = splitUri(objetUri);
   s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH, 0.1, springLongueur, propriete[0] ); // force , damping, longueur
 
 
-  	s.imageConst = constructImage(propriete[0]);
+  	s.imageConst = constructImage(propriete[1]);
 		s.img = s.imageConst[0];
 		s.IMGtaille = s.imageConst[1];
 		links.push(s);

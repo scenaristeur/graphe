@@ -1,4 +1,4 @@
-function Noeud (id,prefix){
+function Noeud (prefix,id){
 //	console.log(this);
 this.id=id;
 this.prefix=prefix;
@@ -14,7 +14,7 @@ var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),ra
 
 this.particule=p;
 p.id=this.id;
-//this.createImg();
+this.createImg();
 //r1 = physics.makeAttraction( centre, this.particule, 100, 200 );
 /*for(var i=0;i<noeuds.length;i++){
 	var noeud=noeuds[i];
@@ -25,7 +25,7 @@ p.id=this.id;
 //updateAttractions();
 }
 Noeud.prototype.createImg = function(){
-//console.log(this.id);
+console.log(this.id);
 if(this.id.length>20){
 	var littleText=this.id.slice(0,20).concat("...");
 	this.imageConst = constructImage(littleText);
