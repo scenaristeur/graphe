@@ -34,6 +34,8 @@ var loadSourceInput;
 var paramSujet;
 var paramPropriete;
 var paramObjet;
+var paramEndpoint;
+var paramRequete;
 
 //SPARQL
 var endpoints = [];
@@ -61,6 +63,8 @@ function setup() {
 	paramSujet=query.sujet;
 	paramPropriete = query.propriete;
 	paramObjet = query.objet;
+	paramEndpoint = query.endpoint;
+	paramRequete = query.requete;
 	//CANVAS
 	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.attribute('id', 'canvas');
@@ -116,10 +120,10 @@ fileSelect.position(10, 150);
 
 	initialisationPhysics();
 			initialisationData();
-	if ((typeof paramSujet == "undefined") && (typeof paramPropriete == "undefined") && (typeof paramObjet == "undefined") ){
+	if ((typeof paramSujet == "undefined") && (typeof paramPropriete == "undefined") && (typeof paramObjet == "undefined")&& (typeof paramEndpoint == "undefined") && (typeof paramRequete == "undefined")){
 			remplissageDataTest();
 	}else{
-		rechercheFromParam(paramSujet,paramPropriete,paramObjet);
+		rechercheFromParam(paramSujet,paramPropriete,paramObjet,paramEndpoint,paramRequete);
 	}
 console.log(triplets);
 	triplets2links(triplets);

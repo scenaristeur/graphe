@@ -202,9 +202,12 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   console.log(paramSujet);
   console.log(paramPropriete);
   console.log(paramObjet);
+  console.log(paramEndpoint);
+  console.log(paramRequete);
 
 
 
+  if (typeof paramEndpoint == "undefined"){
   var prefixSmag = "PREFIX+smag%3A++++<http%3A%2F%2Fsmag0.blogspot.fr%2FNS%23>%0D%0A";
 
 
@@ -218,7 +221,7 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   }
   if( typeof paramPropriete == "undefined"){
     paramPropriete = "?Predicat";
-    console.log("####################"+paramPropriete);
+//    console.log("####################"+paramPropriete);
   }else{
     paramPropriete = "smag:"+paramPropriete;
   }
@@ -239,7 +242,33 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
 			message (query);
 			console.log(query);
 			envoiJSONQuery(query);
-
+  }else{
+  
+  console.log(paramEndpoint);
+  console.log(paramRequete);
+  var endpointAsk = paramEndpoint;
+  //prise en compte du endpoint et sujet comme param de l'url, ex : http://127.0.0.1:8000/?endpoint=http://fuseki-smag0.rhcloud.com/ds/query&sujet=http://smag0.blogspot.fr/ns/smag0#P1420278173713
+  //http://jmvanel.free.fr/jmv.rdf#me
+  //http://163.172.179.125:9111/sparql
+  
+    if ( typeof paramSujet == "undefined"){
+    paramSujet = "?Sujet";
+	}
+  if( typeof paramPropriete == "undefined"){
+    paramPropriete = "?Predicat";
+   // console.log("####################"+paramPropriete);
+  }
+  if( typeof paramObjet == "undefined"){
+    paramObjet = "?Objet";
+  }
+  
+  
+  queryAsk = "SELECT * WHERE { \<"+paramSujet+"\> "+paramPropriete+" "+paramObjet+" }&output=json";
+  query=endpointAsk+"?query="+queryAsk;
+			message (query);
+			console.log(query);
+			envoiJSONQuery2(query);
+  }
 }
 
 
