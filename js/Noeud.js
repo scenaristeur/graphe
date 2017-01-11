@@ -10,6 +10,7 @@ var nbParticules = physics.particles.length*10;
 var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
 //console.log(pos);
 //console.log(this);
+p.makeFixed();
 
 
 this.particule=p;

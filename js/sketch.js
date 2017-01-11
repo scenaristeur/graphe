@@ -37,6 +37,7 @@ var paramObjet;
 var paramEndpoint;
 var paramRequete;
 var paramOutput;
+var paramProfondeur = 2;
 
 //SPARQL
 var endpoints = [];
@@ -343,7 +344,7 @@ function gereAttractions(){
 		//console.log(physics.attractions.length+" "+d);
 		//if (d>(hypothenuse)){
 		if (d>(springLongueur*2)){
-			att2remove.push(att);
+		//	att2remove.push(att);
 		//	console.log("rem");
 		}
 
@@ -395,10 +396,11 @@ function envoiJSONQuery(query){
 	loadJSON(query,jsonDataOk,jsonDataError);
 }
 function envoiJSONQuery2(query){
+	paramProfondeur --;
 	loadJSON(query,ldjsonDataOk,jsonDataError);
 }
 function ldjsonDataOk(data){
-	console.log(typeof data);
+	console.log(paramProfondeur);
 console.log(data);
 		console.log(data.head.vars);
 			console.log(data.results.bindings);
@@ -412,13 +414,17 @@ console.log(data);
 	  console.log(paramSujet);
 	console.log(paramPropriete);
 	console.log(paramObjet);
-
+message(jsonTriplets.length);
 	  for  (var i=0; i< jsonTriplets.length;i++){
 	    var jsonTriplet = jsonTriplets[i];
 			console.log(jsonTriplet)
 	    var sujetTemp;
 	    var propTemp;
 	    var objetTemp;
+			var p2Temp;
+			var p3Temp;
+			var o2Temp;
+
 	    if(typeof jsonTriplet.Sujet == "undefined"){
 	      sujetTemp = "http://smag0.blogspot.fr/NS#"+paramSujet;
 	    }else{
@@ -435,7 +441,13 @@ console.log(data);
 	      objetTemp = jsonTriplet.Objet.value;
 	    }
 	    var triplet = new Triplet(sujetTemp,propTemp,objetTemp);
+			var triplet2 = new Triplet(objetTemp,jsonTriplet.p2.value,jsonTriplet.o2.value);
+			var triplet3 = new Triplet(jsonTriplet.s3.value,jsonTriplet.p3.value,sujetTemp);
 	    triplets.push(triplet);
+			triplets.push(triplet2);
+			triplets.push(triplet3);
+
+
 			console.log(triplet);
 	  }
 	  console.log(i+"/"+jsonTriplets.length);

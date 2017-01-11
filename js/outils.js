@@ -100,10 +100,10 @@ if(physics.attractions.length>physics.particles.length){
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
           if ( d<springLongueur && springExist == false && attExist == false ){
                //   console.log(d);
- 
- 			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  // r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, springLongueur*2.4 );
+ 			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
+
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -10, springLongueur*2.4 );
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 
 
@@ -246,7 +246,7 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
 			console.log(query);
 			envoiJSONQuery(query);
   }else{
-  
+
   console.log(paramEndpoint);
   console.log(paramRequete);
   var endpointAsk = paramEndpoint;
@@ -255,7 +255,7 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   //http://163.172.179.125:9111/sparql
   //requete=SELECT%20*%20WHERE%20{%20%20?p%20?o}+LIMIT%2010&output=ld-json
   // OK : http://127.0.0.1:8000/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Test
-  
+
     if ( typeof paramSujet == "undefined"){
     paramSujet = "?Sujet";
 	}
@@ -268,11 +268,19 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   }
   console.log(paramRequete);
    if( typeof paramRequete == "undefined"){
-   queryAsk = "SELECT * WHERE { <"+paramSujet+"> "+paramPropriete+" "+paramObjet+" } LIMIT 100 ";
+   //queryAsk = "SELECT * WHERE { <"+paramSujet+"> "+paramPropriete+" "+paramObjet+" } LIMIT 100 ";
+   queryAsk  = "SELECT DISTINCT * WHERE { \n";
+   queryAsk += "<"+paramSujet+"> "+paramPropriete+" "+paramObjet+" . \n";
+   queryAsk += "OPTIONAL { ?Objet ?p2 ?o2 } . \n";
+   queryAsk += "OPTIONAL { ?s3 ?p3 <"+paramSujet+"> }. \n";
+
+   queryAsk += " } ";
+   queryAsk += "LIMIT 200 ";
+
   }else{
   queryAsk = paramRequete;
   }
- 
+
   query=endpointAsk+"?query="+queryAsk;
 			message (query);
 			console.log(query);
