@@ -78,22 +78,22 @@ function setup() {
 
 	inputSujet = createInput('');
   inputSujet.input(inputSujetEvent);
-	inputSujet.position(10,130);
+	inputSujet.position(10,160);
 	inputSujet.attribute('id', 'inputSujet');
 
 	inputProp = createInput('');
 	inputProp.input(inputPropEvent);
- 	inputProp.position( inputSujet.width,130);
+ 	inputProp.position( inputSujet.width,160);
 	inputProp.attribute('id', 'inputProp');
 
 	inputObjet = createInput('');
 	inputObjet.input(inputObjetEvent);
-	inputObjet.position(2*inputSujet.width,130);
+	inputObjet.position(2*inputSujet.width,160);
 	inputObjet.attribute('id', 'inputObjet');
 
 
 var fileSelect = createFileInput(handleFile);
-fileSelect.position(10, 150);
+fileSelect.position(10, 190);
 //	input = createFileInput(handleFile);  //http://p5js.org/reference/#/p5/createFileInput    createFileInput([callback],[multiple]) https://github.com/processing/p5.js/issues/370
 //	input.position(10, 150);
 /*	loadSourceInput=document.createElement("INPUT");
