@@ -97,11 +97,14 @@ if(physics.attractions.length>physics.particles.length){
           }
         }
         //console.log(hypothenuse);
-      if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
-          //     console.log("add");
+     // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
+          if ( d<springLongueur && springExist == false && attExist == false ){
+               //   console.log(d);
+ 
+ 			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
   			  // r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30, springLongueur*2.4 );
-          			   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
+          			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 
 
          }
@@ -250,6 +253,8 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   //prise en compte du endpoint et sujet comme param de l'url, ex : http://127.0.0.1:8000/?endpoint=http://fuseki-smag0.rhcloud.com/ds/query&sujet=http://smag0.blogspot.fr/ns/smag0#P1420278173713
   //http://jmvanel.free.fr/jmv.rdf#me
   //http://163.172.179.125:9111/sparql
+  //requete=SELECT%20*%20WHERE%20{%20%20?p%20?o}+LIMIT%2010&output=ld-json
+  // OK : http://127.0.0.1:8000/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Test
   
     if ( typeof paramSujet == "undefined"){
     paramSujet = "?Sujet";
@@ -261,9 +266,13 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
   if( typeof paramObjet == "undefined"){
     paramObjet = "?Objet";
   }
-  
-  
-  queryAsk = "SELECT * WHERE { \<"+paramSujet+"\> "+paramPropriete+" "+paramObjet+" }&output=json";
+  console.log(paramRequete);
+   if( typeof paramRequete == "undefined"){
+   queryAsk = "SELECT * WHERE { <"+paramSujet+"> "+paramPropriete+" "+paramObjet+" } LIMIT 100 ";
+  }else{
+  queryAsk = paramRequete;
+  }
+ 
   query=endpointAsk+"?query="+queryAsk;
 			message (query);
 			console.log(query);

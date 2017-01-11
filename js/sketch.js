@@ -36,6 +36,7 @@ var paramPropriete;
 var paramObjet;
 var paramEndpoint;
 var paramRequete;
+var paramOutput;
 
 //SPARQL
 var endpoints = [];
@@ -65,6 +66,7 @@ function setup() {
 	paramObjet = query.objet;
 	paramEndpoint = query.endpoint;
 	paramRequete = query.requete;
+	paramOutput = query.output;
 	//CANVAS
 	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   canvas.attribute('id', 'canvas');
@@ -123,7 +125,7 @@ fileSelect.position(10, 150);
 	if ((typeof paramSujet == "undefined") && (typeof paramPropriete == "undefined") && (typeof paramObjet == "undefined")&& (typeof paramEndpoint == "undefined") && (typeof paramRequete == "undefined")){
 			remplissageDataTest();
 	}else{
-		rechercheFromParam(paramSujet,paramPropriete,paramObjet,paramEndpoint,paramRequete);
+		rechercheFromParam(paramSujet,paramPropriete,paramObjet,paramEndpoint,paramRequete,paramOutput);
 	}
 console.log(triplets);
 	triplets2links(triplets);
@@ -339,7 +341,8 @@ function gereAttractions(){
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
 		//console.log(physics.attractions.length+" "+d);
-		if (d>(hypothenuse)){
+		//if (d>(hypothenuse)){
+		if (d>(springLongueur*2)){
 			att2remove.push(att);
 		//	console.log("rem");
 		}
@@ -390,6 +393,55 @@ function inputObjetEvent(){
 
 function envoiJSONQuery(query){
 	loadJSON(query,jsonDataOk,jsonDataError);
+}
+function envoiJSONQuery2(query){
+	loadJSON(query,ldjsonDataOk,jsonDataError);
+}
+function ldjsonDataOk(data){
+	console.log(typeof data);
+console.log(data);
+		console.log(data.head.vars);
+			console.log(data.results.bindings);
+			var jsonTriplets = data.results.bindings;
+//[jsonTriplets,triplets]
+
+		//Création d'un worker
+
+
+//	  var noeuds = e.data[2];
+	  console.log(paramSujet);
+	console.log(paramPropriete);
+	console.log(paramObjet);
+
+	  for  (var i=0; i< jsonTriplets.length;i++){
+	    var jsonTriplet = jsonTriplets[i];
+			console.log(jsonTriplet)
+	    var sujetTemp;
+	    var propTemp;
+	    var objetTemp;
+	    if(typeof jsonTriplet.Sujet == "undefined"){
+	      sujetTemp = "http://smag0.blogspot.fr/NS#"+paramSujet;
+	    }else{
+	      sujetTemp = jsonTriplet.Sujet.value;
+	    }
+	    if(typeof jsonTriplet.Predicat == "undefined"){
+	      propTemp = "http://smag0.blogspot.fr/NS#"+paramPropriete;
+	    }else{
+	      propTemp = jsonTriplet.Predicat.value;
+	    }
+	    if(typeof jsonTriplet.Objet == "undefined"){
+	      objetTemp = "http://smag0.blogspot.fr/NS#"+paramObjet;
+	    }else{
+	      objetTemp = jsonTriplet.Objet.value;
+	    }
+	    var triplet = new Triplet(sujetTemp,propTemp,objetTemp);
+	    triplets.push(triplet);
+			console.log(triplet);
+	  }
+	  console.log(i+"/"+jsonTriplets.length);
+		console.log(triplets);
+			triplets2links(triplets);
+			updateAttractions();
 }
 
 
