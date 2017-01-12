@@ -341,11 +341,11 @@ function gereAttractions(){
 		var a = att.a.position;
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
-		//console.log(physics.attractions.length+" "+d);
+console.log(physics.attractions.length+" "+d);
 		//if (d>(hypothenuse)){
 		if (d>(springLongueur*2)){
-		//	att2remove.push(att);
-		//	console.log("rem");
+			att2remove.push(att);
+			console.log("rem ");
 		}
 
 	}

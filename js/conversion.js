@@ -15,13 +15,11 @@ function data2Xml( _dataString) {
     }
     console.log(xmlDoc);
     createTableauxXml(xmlDoc);
-
 }
 
 function rdf2Xml2(_dataString){
-//console.log(_dataString);
-loadStrings(_dataString,traiteRDFLignes,erreurRDFLignes);
-
+  //console.log(_dataString);
+  loadStrings(_dataString,traiteRDFLignes,erreurRDFLignes);
 }
 
 function traiteRDFLignes(lignes){

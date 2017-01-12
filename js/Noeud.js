@@ -5,12 +5,12 @@ this.prefix=prefix;
 
 this.img = loadImage("");
 this.imageConst;
-var nbParticules = physics.particles.length*10;
+//var nbParticules = physics.particles.length*10;
 //var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
 var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
 //console.log(pos);
-//console.log(this);
-p.makeFixed();
+console.log(physics.particles.length);
+//p.makeFixed();
 
 
 this.particule=p;
