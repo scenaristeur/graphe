@@ -57,7 +57,7 @@ var springLongueur=springLongueurDefault;
 //var seuilAtt=springLongueur*3;
 var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
-var mouse,b,c =new Particle();
+//var mouse,b,c =new Particle();
 //var inputLongueur;
 
 function setup() {
@@ -95,6 +95,8 @@ function setup() {
 
 var fileSelect = createFileInput(handleFile);
 fileSelect.position(10, 190);
+var exempleFile = createDiv('<a href="examples" target="_blank" >examples</a>');
+exempleFile.position(10,210);
 //	input = createFileInput(handleFile);  //http://p5js.org/reference/#/p5/createFileInput    createFileInput([callback],[multiple]) https://github.com/processing/p5.js/issues/370
 //	input.position(10, 150);
 /*	loadSourceInput=document.createElement("INPUT");
@@ -175,16 +177,16 @@ function draw(){
 	}
 
 
-  mouse.position.x = mouseX-width/2;
-  mouse.position.y = mouseY-height/2;
-  mouse.position.z = 0;
+  //mouse.position.x = mouseX-width/2;
+  //mouse.position.y = mouseY-height/2;
+  //mouse.position.z = 0;
   physics.tick();
 
   //stroke( 2 );
 	//fill(10,0,0,10);
 	//noFill();
 //affichage souris
-  ellipse( mouse.position.x, mouse.position.y, 35, 35 );
+  //ellipse( mouse.position.x, mouse.position.y, 35, 35 );
 
 		//affichage centre 0,0,0, la particule "centre" a pu se déplacer ?
   box( 10 );
@@ -219,7 +221,7 @@ if (afficheTout == true){
 		 z=particle.position.z;
 
 			}
-			var taille=particle.mass;
+			var taille=particle.mass/2;
 			push();
 	  	translate( x, y ,z );
 			if ((particle.id==sujetValue) /*|| (particle.id==objetValue)*/){
@@ -238,7 +240,7 @@ if (afficheTout == true){
 				}
 
 //console.log(taille);
-				sphere(10);
+				sphere(3+taille);
 			//	console.log(s);
 			//	s.mouseOver(test);
 			}
@@ -320,16 +322,35 @@ if((triplets2add.length>0) ){
 //if(triplets2add.length == 0){
 	//	continueRequete();
 
-	gereAttractions();
+
 
 //}
-/*
-if (physics.attractions.length>0){
-console.log(triplets2add.length+"springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
-}*/
+
+if (physics.attractions.length<500){
+		physics.particles = shuffle(physics.particles);
+		updateAttractions();
+}
+	gereAttractions();
 }
 
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
 function gereAttractions(){
 //	console.log("springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
@@ -341,11 +362,11 @@ function gereAttractions(){
 		var a = att.a.position;
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
-console.log(physics.attractions.length+" "+d);
+//console.log(physics.attractions.length+" "+d);
 		//if (d>(hypothenuse)){
-		if (d>(springLongueur*2)){
+		if (d>(springLongueur)){
 			att2remove.push(att);
-			console.log("rem ");
+		message(physics.attractions.length);
 		}
 
 	}
@@ -354,7 +375,8 @@ console.log(physics.attractions.length+" "+d);
 		var att = att2remove[j];
 		physics.attractions.remove(att);
 	}
-	updateAttractions();
+
+
 //	console.log(av +" "+att2remove.length+" "+physics.attractions.length);
 }
 

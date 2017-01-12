@@ -7,9 +7,11 @@ this.img = loadImage("");
 this.imageConst;
 //var nbParticules = physics.particles.length*10;
 //var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
-var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
+//var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
+var p = physics.makeParticle( 2.0, random(-1,1),random(-1,1),random(-1,1));
+
 //console.log(pos);
-console.log(physics.particles.length);
+//console.log(physics.particles.length);
 //p.makeFixed();
 
 
@@ -26,7 +28,7 @@ this.createImg();
 //updateAttractions();
 }
 Noeud.prototype.createImg = function(){
-console.log(this.id);
+//console.log(this.id);
 if(this.id.length>20){
 	var littleText=this.id.slice(0,20).concat("...");
 	this.imageConst = constructImage(littleText);

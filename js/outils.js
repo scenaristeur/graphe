@@ -42,7 +42,7 @@ if(physics.attractions.length>physics.particles.length){
       //console.log(i +" "j);
       var noeudJ=noeuds[j];
 
-  	  if(noeudI!=noeudJ){
+  	  if(noeudI!=noeudJ ){
         var posI = noeudI.particule.position;
         var posJ = noeudJ.particule.position;
         var d = dist(posI.x,posI.y,posI.z, posJ.x,posJ.y,posJ.z);
@@ -53,7 +53,7 @@ if(physics.attractions.length>physics.particles.length){
           var spring=physics.springs[h];
           var a =spring.a;
           var b=spring.b;
-          //console.log(a);
+
           //console.log(b);
           if(((a==noeudI.particule) && (b==noeudJ.particule)) || ((b==noeudI.particule) && (a==noeudJ.particule))){
             springExist = true;
@@ -98,17 +98,18 @@ if(physics.attractions.length>physics.particles.length){
         }
         //console.log(hypothenuse);
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
-          if ( d<springLongueur && springExist == false && attExist == false ){
+          if ( d<springLongueur*2 && springExist == false && attExist == false && physics.attractions.length<500 ){
                //   console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -10, springLongueur*2.4 );
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5, 50 ); //-5,5
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 
 
          }
       }
+
   //  }
 
 }
@@ -293,12 +294,12 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
 function splitUri(uri){
   var result = [];
   result = uri.split("#");
- console.log(result);
+ //console.log(result);
   if (result.length != 2){
     var rest = uri.substring(0, uri.lastIndexOf("/") + 1);
     var last = uri.substring(uri.lastIndexOf("/") + 1, uri.length);
-   console.log(rest);
-  console.log(last);
+   //console.log(rest);
+  //console.log(last);
     result[0]=rest;
     result[1]=last;
   //  console.log(result);
@@ -357,12 +358,12 @@ var objet = splitUri(objetUri);
 		}
 //console.log(sujetCourant);
 //console.log(objetCourant)
-  console.log(noeuds);
-  //sujetCourant.particule.mass++;
-  //objetCourant.particule.mass++;
-  //var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
+//  console.log(noeuds);
+  sujetCourant.particule.mass++;
+  objetCourant.particule.mass++;
+  var m=(sujetCourant.particule.mass+objetCourant.particule.mass)/2;
 	//	s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
-  s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH, 0.1, springLongueur, propriete[0] ); // force , damping, longueur
+  s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH, 0.1, springLongueur+5*m, propriete[0] ); // force , damping, longueur
 
 
   	s.imageConst = constructImage(propriete[1]);
