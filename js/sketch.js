@@ -258,7 +258,7 @@ if (afficheTout == true){
 	}
 
 
-}
+
 	for (i = 0 ; i< physics.springs.length;i++){
 		var spring = physics.springs[i];
 		var deb = spring.a;
@@ -275,6 +275,7 @@ if (afficheTout == true){
 		var milieuSens = createVector((debX * 3 + finX) / 4, (debY * 3 + finY) / 4, (debZ * 3 + finZ) / 4);
 		//pour eviter que les proprietes ne se superposent ou gerer une repulsion
 		//	var milieuSens = createVector((debX * 3 + finX) / 4+random(10), (debY * 3 + finY) / 4+random(10), (debZ * 3 + finZ) / 4+random(10));
+				normalMaterial();
 		beginShape();
 	//	fill(0, 0, 0);
 			vertex(debX, debY,debZ);
@@ -288,7 +289,7 @@ if (afficheTout == true){
 		//if ((this.sujet.particle.position.z>0 && (this.objet.particle.position.z>0))){
 		//if (afficheTexte) {
 		//	translate(10, 10, -10);
-		if (afficheTout == true){
+
 		translate(milieuSens.x, milieuSens.y, milieuSens.z);
 		rotateX(-rotationX);
 		rotateY(-rotationY);
@@ -298,10 +299,24 @@ if (afficheTout == true){
 		//	box(80, 80, 80);
 		plane(spring.IMGtaille, 20);
 		pop();
-	}
-		normalMaterial();
-	}
+				normalMaterial();
+}
 
+physics.particles = shuffle(physics.particles);
+updateAttractions();
+
+}else{
+	for (i = 0 ; i< physics.particles.length;i++){
+		var particle = physics.particles[i];
+		push();
+		translate(particle.position.x,particle.position.y,particle.position.z);
+		sphere(1);
+pop();
+		normalMaterial();
+}			normalMaterial();}
+
+
+	gereAttractions();
 
 if((triplets2add.length>0) ){
 	var lim=min(10,triplets2add.length);
@@ -326,11 +341,13 @@ if((triplets2add.length>0) ){
 
 //}
 
-if (physics.attractions.length<500){
-		physics.particles = shuffle(physics.particles);
-		updateAttractions();
-}
-	gereAttractions();
+//if (physics.attractions.length<1000){
+//console.log(physics.attractions.length);
+
+//}
+//console.log(physics.attractions.length);
+
+	//console.log(physics.attractions.length);
 }
 
 function shuffle(array) {
@@ -362,9 +379,9 @@ function gereAttractions(){
 		var a = att.a.position;
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
-//console.log(physics.attractions.length+" "+d);
+
 		//if (d>(hypothenuse)){
-		if (d>(springLongueur)){
+		if (d>(springLongueur+physics.attractions.length)){
 			att2remove.push(att);
 		message(physics.attractions.length);
 		}

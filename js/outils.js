@@ -98,12 +98,12 @@ if(physics.attractions.length>physics.particles.length){
         }
         //console.log(hypothenuse);
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
-          if ( d<springLongueur*2 && springExist == false && attExist == false && physics.attractions.length<500 ){
-               //   console.log(d);
+          if ( d<springLongueur && springExist == false && attExist == false && physics.attractions.length<500 ){
+            //      console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5, 50 ); //-5,5
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5, springLongueur ); //-5,5
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 
 
