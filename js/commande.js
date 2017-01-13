@@ -21,6 +21,16 @@ function commandes(){
     cameraZ-=facteurZoom*2;
   if (keyIsDown(192))//touche ù
     cameraZ+=facteurZoom*2;
+  if (keyIsDown(75)){//touche k{
+      limiteAttraction=limiteAttraction+10;
+      message("Limite Attraction : "+ limiteAttraction);
+      updateAttractions();
+    }
+  if (keyIsDown(74)){//touche j
+      limiteAttraction=limiteAttraction-10;
+      message("Limite Attraction : "+ limiteAttraction);
+      updateAttractions();
+    }
   if (keyIsDown(73)){ // touche i pour passer en mode insertion comme vi =  sortir du mode commande
     modeCommande = false;
     message("Mode commande : "+modeCommande);

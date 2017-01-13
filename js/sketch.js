@@ -20,7 +20,8 @@ defautMessage+="[[<a href='js/commande.js' target='_blank'>Commandes</a>]][[<a h
 var rotationX = 0,rotationY = 0,rotationZ = 0;
 var font = '36pt Times';
 var afficheTout = true;
-var triplets2add =[];
+var triplets2add = [];
+var springs2add = [];
 
 // DONNEES
 var sujetValue;
@@ -57,6 +58,8 @@ var springLongueur=springLongueurDefault;
 //var seuilAtt=springLongueur*3;
 var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
+var dMoyenne = springLongueur;
+var limiteAttraction = springLongueur;
 //var mouse,b,c =new Particle();
 //var inputLongueur;
 
@@ -141,6 +144,7 @@ function draw(){
 	background(250);
 	camera(cameraX,cameraY,cameraZ);
 		  normalMaterial();
+		//	message(frameRate());
 //	strokeWeight(3);
 //	stroke(0);
 //	noFill();
@@ -222,6 +226,7 @@ if (afficheTout == true){
 
 			}
 			var taille=particle.mass/2;
+			constrain( taille, 0, 10 )
 			push();
 	  	translate( x, y ,z );
 			if ((particle.id==sujetValue) /*|| (particle.id==objetValue)*/){
@@ -299,11 +304,11 @@ if (afficheTout == true){
 		//	box(80, 80, 80);
 		plane(spring.IMGtaille, 20);
 		pop();
-				normalMaterial();
+
 }
 
-physics.particles = shuffle(physics.particles);
-updateAttractions();
+//physics.particles = shuffle(physics.particles);
+//updateAttractions();
 
 }else{
 	for (i = 0 ; i< physics.particles.length;i++){
@@ -312,10 +317,24 @@ updateAttractions();
 		translate(particle.position.x,particle.position.y,particle.position.z);
 		sphere(1);
 pop();
-		normalMaterial();
+
 }			normalMaterial();}
 
+physics.particles = shuffle(physics.particles);
+//if(frameRate()>10){
 
+if(physics.attractions.length<100){
+
+
+}
+/*if((physics.attractions.length<200)&& limiteAttraction<300){
+	limiteAttraction=limiteAttraction+1;
+	console.log(limiteAttraction);
+}*/
+/*afficheTout=true;
+}else{
+	afficheTout=false;
+}*/
 	gereAttractions();
 
 if((triplets2add.length>0) ){
@@ -330,9 +349,29 @@ if((triplets2add.length>0) ){
 	triplets2links(triplets);
 		}
 
+
+
 	//updateAttractions();
 
 
+}
+
+//console.log(springs2add);
+if(springs2add.length>0){
+var lim = min(1,springs2add.length);
+for (var l=0;l<lim;l++){
+	var s2a=springs2add.pop();
+
+s = physics.makeSpring( s2a.a, s2a.b, s2a.force, s2a.damping, s2a.longueur, s2a.propriete ); // force , damping, longueur
+s.imageConst = constructImage(s2a.propriete);
+s.img = s.imageConst[0];
+s.IMGtaille = s.imageConst[1];
+links.push(s);
+}
+
+}
+if(physics.attractions.length<physics.particles.length){
+	updateAttractions();
 }
 //if(triplets2add.length == 0){
 	//	continueRequete();
@@ -372,29 +411,40 @@ function shuffle(array) {
 function gereAttractions(){
 //	console.log("springs "+physics.springs.length+" / attractions : "+physics.attractions.length+" framerate : "+int(frameRate()));
 	//console.log(physics.attractions[0]);
+	var tot = 0;
 	var att2remove=[];
 	for (var i=0;i<physics.attractions.length;i++){
-		var att = physics.attractions[i];
 
+		var att = physics.attractions[i];
 		var a = att.a.position;
 		var b = att.b.position;
 		var d = dist(a.x,a.y,a.z,b.x,b.y,b.z);
 
-		//if (d>(hypothenuse)){
-		if (d>(springLongueur+physics.attractions.length)){
+		//console.log(d);
+
+
+
+
+		if (d>(limiteAttraction)){
 			att2remove.push(att);
 		message(physics.attractions.length);
 		}
+					tot +=d;
+}
 
-	}
+	dMoyenne = tot/physics.attractions.length;
+
 	var av=att2remove.length;
 	for (var j=0;j<att2remove.length;j++){
 		var att = att2remove[j];
 		physics.attractions.remove(att);
+		console.log("rem");
 	}
-
-
-//	console.log(av +" "+att2remove.length+" "+physics.attractions.length);
+	/*
+console.log(physics.attractions.length);
+dMoyenne = tot/physics.attractions.length;
+console.log(dMoyenne);*/
+	console.log(av +" "+att2remove.length+" "+physics.attractions.length+" "+int(dMoyenne)+" "+limiteAttraction);
 }
 
 function continueRequete(){
@@ -447,6 +497,7 @@ console.log(data);
 //[jsonTriplets,triplets]
 
 		//Création d'un worker
+
 
 
 //	  var noeuds = e.data[2];
