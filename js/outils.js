@@ -280,11 +280,13 @@ function rechercheFromParam(paramSujet,paramPropriete,paramObjet){
    if( typeof paramRequete == "undefined"){
    //queryAsk = "SELECT * WHERE { <"+paramSujet+"> "+paramPropriete+" "+paramObjet+" } LIMIT 100 ";
    queryAsk  = "SELECT DISTINCT * WHERE { \n";
-   queryAsk += "<"+paramSujet+"> "+paramPropriete+" "+paramObjet+" . \n";
-   queryAsk += "OPTIONAL { ?Objet ?p2 ?o2 } . \n";
-   queryAsk += "OPTIONAL { ?s3 ?p3 <"+paramSujet+"> }. \n";
 
-   queryAsk += " } ";
+   var wherePart = "<"+paramSujet+"> "+paramPropriete+" "+paramObjet+" . \n";
+   wherePart += "OPTIONAL { ?Objet ?p2 ?o2 } . \n";
+   wherePart += "OPTIONAL { ?s3 ?p3 <"+paramSujet+"> }. \n";
+   var wherePartComplete = "OPTIONAL { " + wherePart + "} GRAPH ?GRAPH { " + wherePart + " }";
+
+   queryAsk += wherePartComplete + " } ";
    queryAsk += "LIMIT 200 ";
 
   }else{
