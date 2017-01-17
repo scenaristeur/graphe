@@ -225,8 +225,8 @@ if (afficheTout == true){
 		 z=particle.position.z;
 
 			}
-			var taille=particle.mass/2;
-			constrain( taille, 0, 10 )
+			var taille=particle.mass;
+		//	constrain( taille, 0, 10 )
 			push();
 	  	translate( x, y ,z );
 			if ((particle.id==sujetValue) /*|| (particle.id==objetValue)*/){
@@ -315,7 +315,7 @@ if (afficheTout == true){
 		var particle = physics.particles[i];
 		push();
 		translate(particle.position.x,particle.position.y,particle.position.z);
-		sphere(1);
+		sphere(3+particle.mass);
 pop();
 
 }			normalMaterial();}
@@ -370,9 +370,9 @@ links.push(s);
 }
 
 }
-if(physics.attractions.length<physics.particles.length){
+//if(physics.attractions.length<physics.particles.length){
 	updateAttractions();
-}
+//}
 //if(triplets2add.length == 0){
 	//	continueRequete();
 
@@ -426,15 +426,16 @@ function gereAttractions(){
 
 
 		if (d>(limiteAttraction)){
+			//		if (d>(springLongueur)){
 			att2remove.push(att);
 	//	message(physics.attractions.length);
 		}
 					tot +=d;
 }
 
-	dMoyenne = tot/physics.attractions.length;
 
-	var av=att2remove.length;
+
+
 	for (var j=0;j<att2remove.length;j++){
 		var att = att2remove[j];
 		physics.attractions.remove(att);
@@ -444,7 +445,10 @@ function gereAttractions(){
 console.log(physics.attractions.length);
 dMoyenne = tot/physics.attractions.length;
 console.log(dMoyenne);*/
-	console.log(av +" "+att2remove.length+" "+physics.attractions.length+" "+int(dMoyenne)+" "+limiteAttraction);
+if(physics.attractions.length>0){
+		dMoyenne = tot/physics.attractions.length;
+	console.log(" 2rem :"+att2remove.length+" att : "+physics.attractions.length+" moy : "+int(dMoyenne)+" limite :"+limiteAttraction);
+}
 }
 
 function continueRequete(){

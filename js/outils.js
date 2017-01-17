@@ -38,6 +38,7 @@ if(physics.attractions.length>200){
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
     //  r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
+  //  if(physics.attractions.length<1000 ){
     for(var j=0;j<noeuds.length;j++){
       //console.log(i +" "j);
       var noeudJ=noeuds[j];
@@ -104,12 +105,12 @@ if(physics.attractions.length>200){
         //console.log(hypothenuse);
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
         //    console.log(d+" "+limiteAttraction);
-          if ( springExist == false && attExist == false && ((d<frameRate() || d<limiteAttraction ) )  ){ //
-            //      console.log(d);
+          if ( springExist == false && attExist == false  && ( d<min(limiteAttraction,dMoyenne+1 )) ){ //&& physics.attractions.length<1000 && (d<dMoyenne+1 || d<10) && ((d<frameRate() ||  && (d<dMoyenne+10)
+                //  console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5, 5 ); //-5,5
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -50, limiteAttraction ); //-5,5
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 //console.log(physics.attractions.length);
 
@@ -118,10 +119,10 @@ if(physics.attractions.length>200){
       }
 
   //  }
-
 }
+//}
 }
-     console.log(physics.attractions.length);
+    // console.log(physics.attractions.length);
 }
 
 // initialisation
@@ -367,8 +368,8 @@ var objet = splitUri(objetUri);
 //console.log(sujetCourant);
 //console.log(objetCourant)
 //  console.log(noeuds);
-  sujetCourant.particule.mass = sujetCourant.particule.mass+.1;
-  objetCourant.particule.mass = objetCourant.particule.mass+.1;
+  sujetCourant.particule.mass = sujetCourant.particule.mass+.2;
+  objetCourant.particule.mass = objetCourant.particule.mass+.2;
   var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
 	//	s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
 
