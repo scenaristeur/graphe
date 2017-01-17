@@ -1,4 +1,4 @@
-"# graphe"
+":graphe"
 L'interface la plus simple pour visualiser et gérer des bases de connaissance au format RDF.
 
 
