@@ -10,13 +10,16 @@ L'interface la plus simple pour visualiser et gérer des bases de connaissance a
  https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Resource_Description_Framework
  
  
-  https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Lyon
+- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Lyon
   
   
-   https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
+https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
    
    
-    https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
+- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
+
+
+https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ville
  
  
  dbpedia n'étant pas encore en https, activez au bout de la barre d'adresse le chargement de script à risque (bouclier)
