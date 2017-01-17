@@ -3,27 +3,32 @@ L'interface la plus simple pour visualiser et gérer des bases de connaissance a
 
 
 
-[DEMO](https://scenaristeur.github.io/graphe/)
+- [DEMO](https://scenaristeur.github.io/graphe/)
 
  # url parametree, exemple with parametrized url :
  
- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Resource_Description_Framework
+  dbpedia n'étant pas encore en https, activez au bout de la barre d'adresse le chargement de script à risque (bouclier)
+ 
+ - https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Resource_Description_Framework
  
  
 - https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Lyon
   
   
-https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
+- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
    
    
 - https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
 
 
-https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ville
+- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ville
  
  
- dbpedia n'étant pas encore en https, activez au bout de la barre d'adresse le chargement de script à risque (bouclier)
 
+
+ou remplacez XXX par ce que vous voulez dans :
+
+https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/XXX
 
 
 
