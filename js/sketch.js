@@ -59,7 +59,7 @@ var springLongueur=springLongueurDefault;
 var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
 var dMoyenne = springLongueur;
-var limiteAttraction = springLongueur;
+var limiteAttraction = 50;
 //var mouse,b,c =new Particle();
 //var inputLongueur;
 
@@ -98,7 +98,7 @@ function setup() {
 
 var fileSelect = createFileInput(handleFile);
 fileSelect.position(10, 190);
-var exempleFile = createDiv('<a href="examples" target="_blank" >examples</a>');
+var exempleFile = createDiv('<a href="https://github.com/scenaristeur/graphe/tree/master/examples" target="_blank" >examples</a>');
 exempleFile.position(10,210);
 //	input = createFileInput(handleFile);  //http://p5js.org/reference/#/p5/createFileInput    createFileInput([callback],[multiple]) https://github.com/processing/p5.js/issues/370
 //	input.position(10, 150);
