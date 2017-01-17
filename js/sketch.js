@@ -427,7 +427,7 @@ function gereAttractions(){
 
 		if (d>(limiteAttraction)){
 			att2remove.push(att);
-		message(physics.attractions.length);
+	//	message(physics.attractions.length);
 		}
 					tot +=d;
 }

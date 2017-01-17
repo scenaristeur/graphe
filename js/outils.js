@@ -104,7 +104,7 @@ if(physics.attractions.length>200){
         //console.log(hypothenuse);
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
         //    console.log(d+" "+limiteAttraction);
-          if ( springExist == false && attExist == false && ((d<frameRate() || d<limiteAttraction ) ) ){ //&& physics.attractions.length<1000
+          if ( springExist == false && attExist == false && ((d<frameRate() || d<limiteAttraction ) )  ){ //
             //      console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
@@ -112,14 +112,16 @@ if(physics.attractions.length>200){
   			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5, 5 ); //-5,5
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 //console.log(physics.attractions.length);
-  console.log("add");
+
          }
+
       }
 
   //  }
 
 }
 }
+     console.log(physics.attractions.length);
 }
 
 // initialisation
@@ -370,16 +372,17 @@ var objet = splitUri(objetUri);
   var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
 	//	s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
 
-spring={a:sujetCourant.particule,b:objetCourant.particule, force:SPRING_STRENGTH,damping:0.1,longueur : springLongueur, propriete:propriete[0]};
+spring={a:sujetCourant.particule,b:objetCourant.particule, force:SPRING_STRENGTH,damping:0.1,longueur : springLongueur, propriete:propriete[1]};
   springs2add.push(spring);
-  //console.log(springs2add);
+
 
 //  s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, SPRING_STRENGTH, 0.1, springLongueur, propriete[0] ); // force , damping, longueur
-  //	s.imageConst = constructImage(propriete[1]);
-	//	s.img = s.imageConst[0];
-	//	s.IMGtaille = s.imageConst[1];
+  //	spring.imageConst = constructImage(propriete[1]);
+	//	spring.img = spring.imageConst[0];
+	//	spring.IMGtaille = spring.imageConst[1];
 	//	links.push(s);
-	//	console.log("S :"+links.length);
+	//	console.log("S :"+springs2add.length);
+    //  console.log(spring);
 	}
 //updateAttractions();
 }
