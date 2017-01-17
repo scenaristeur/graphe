@@ -9,21 +9,21 @@ L'interface la plus simple pour visualiser et gérer des bases de connaissance a
  
   dbpedia n'étant pas encore en https, activez au bout de la barre d'adresse le chargement de script à risque (bouclier)
  
- - https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Resource_Description_Framework
+- Rdf :  https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Resource_Description_Framework
  
  
-- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Lyon
+- Lyon : https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Lyon
   
   
- - https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ruillé-le-Gravelais
+- Ruillé-le-Gravelais : https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ruillé-le-Gravelais
   
-- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
+- Molière : https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
    
    
-- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
+- Arduino : https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
 
 
-- https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ville
+- Ville : https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Ville
  
  
 
@@ -31,6 +31,8 @@ L'interface la plus simple pour visualiser et gérer des bases de connaissance a
 ou remplacez XXX par ce que vous voulez dans :
 
 https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/XXX
+
+vous pouvez même remplacer la valeur de endpoint par votre endpoint préféré
 
 
 
@@ -40,7 +42,7 @@ testé avec le navigateur Chrome v55
 
 with P5JS in WEB-GL mode
 
-todo : corriger la position de la souris en cas de translation
+todo : corriger la position de la souris en cas de translation, clic sur noeud pour passer d'un noeud a l'autre.
 
 depuis le repertoire cloné, lancez un serveur web  selon votre version de python installée, comme décrit ici :
 
