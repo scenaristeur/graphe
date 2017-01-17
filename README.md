@@ -15,6 +15,7 @@ L'interface la plus simple pour visualiser et gérer des bases de connaissance a
   
    https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Molière
    
+   
     https://scenaristeur.github.io/graphe/?endpoint=http://fr.dbpedia.org/sparql&sujet=http://fr.dbpedia.org/resource/Arduino
  
  
