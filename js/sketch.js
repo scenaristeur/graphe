@@ -449,7 +449,7 @@ function gereAttractions(){
 	for (var j=0;j<att2remove.length;j++){
 		var att = att2remove[j];
 		physics.attractions.remove(att);
-		console.log("rem");
+	//	console.log("rem");
 	}
 	/*
 console.log(physics.attractions.length);
