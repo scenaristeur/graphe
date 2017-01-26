@@ -8,7 +8,7 @@ this.imageConst;
 //var nbParticules = physics.particles.length*10;
 //var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
 //var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
-var p = physics.makeParticle( 2.0, random(-limiteAttraction,limiteAttraction),random(-limiteAttraction,limiteAttraction),random(-limiteAttraction,limiteAttraction));
+var p = physics.makeParticle( 3.0, random(-1,1),random(-1,1),random(0,limiteAttraction*4));
 
 //console.log(pos);
 //console.log(physics.particles.length);

@@ -148,8 +148,9 @@ function keyPressed() {
    		  cameraY = 0;
         cameraZ = 0;
         springLongueur = springLongueurDefault;
-        SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT/10;
+        SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
         PHYS_DRAG = PHYS_DRAG_DEFAULT;
+        limiteAttraction = 100;
         rotationX = 0;
         rotationY = 0;
         rotationZ = 0;

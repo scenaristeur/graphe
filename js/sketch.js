@@ -1,4 +1,6 @@
 //AFFICHAGE
+
+//pour debug, decommenter la ligne 461
 var canvas;
 var facteurZoom = 2;
 var limiteZDefaut=600;
@@ -49,17 +51,18 @@ var offsetSparql = 0;
 //PHYSICS
 var physics;
 var PHYS_GRAVITY = 0;
-var PHYS_DRAG_DEFAULT = 0.05;
+var PHYS_DRAG_DEFAULT = 0.05; //0.05
 var PHYS_DRAG = PHYS_DRAG_DEFAULT;
-var SPRING_STRENGTH_DEFAULT = 0.001; //0.01
+var SPRING_STRENGTH_DEFAULT = 0.003; //0.01
 var SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
-var springLongueurDefault=120;
+var springLongueurDefault=300;
 var springLongueur=springLongueurDefault;
 //var seuilAtt=springLongueur*3;
 var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
 var dMoyenne = springLongueur;
-var limiteAttraction = 50;
+var limiteAttraction = 150;
+//var lim = 0;
 //var mouse,b,c =new Particle();
 //var inputLongueur;
 
@@ -135,13 +138,16 @@ exempleFile.position(10,210);
 	}
 console.log(triplets);
 	triplets2links(triplets);
+
+	  if(physics.attractions.length<1000 ){
 	updateAttractions();
+}
 }
 
 
 
 function draw(){
-	background(250);
+	background(204,255,204);
 	camera(cameraX,cameraY,cameraZ);
 		  normalMaterial();
 		//	message(frameRate());
@@ -196,7 +202,7 @@ function draw(){
   box( 10 );
 
 	if(stabilisation){
-		stabilisation();
+		stabi();
 	}
 
 
@@ -337,24 +343,6 @@ if(physics.attractions.length<100){
 }*/
 	gereAttractions();
 
-if((triplets2add.length>0) ){
-	var lim=min(10,triplets2add.length);
-		for (var l=0;l<lim;l++){
-			var t=triplets2add.pop();
-		//	console.log(t);
-			var triplet = new Triplet(t.sujet,t.propriete,t.objet);
-			triplets.push(triplet);
-		//	triplets2links(triplets);
-		//console.log(triplets2add.length+" "+triplets.length);
-	triplets2links(triplets);
-		}
-
-
-
-	//updateAttractions();
-
-
-}
 
 //console.log(springs2add);
 if(springs2add.length>0){
@@ -370,9 +358,31 @@ links.push(s);
 }
 
 }
-//if(physics.attractions.length<physics.particles.length){
+  if(physics.attractions.length<1000 ){
 	updateAttractions();
-//}
+
+	if((triplets2add.length>0) && (physics.attractions.length<500) ){
+		var lim=min(10,triplets2add.length);
+			for (var l=0;l<lim;l++){
+				var t=triplets2add.pop();
+			//	console.log(t);
+				var triplet = new Triplet(t.sujet,t.propriete,t.objet);
+				triplets.push(triplet);
+			//	triplets2links(triplets);
+			//console.log(triplets2add.length+" "+triplets.length);
+		triplets2links(triplets);
+			}
+}
+
+
+
+
+
+
+	//updateAttractions();
+
+
+}
 //if(triplets2add.length == 0){
 	//	continueRequete();
 
@@ -425,7 +435,7 @@ function gereAttractions(){
 
 
 
-		if (d>(limiteAttraction)){
+		if (d>limiteAttraction){
 			//		if (d>(springLongueur)){
 			att2remove.push(att);
 	//	message(physics.attractions.length);
@@ -446,9 +456,14 @@ console.log(physics.attractions.length);
 dMoyenne = tot/physics.attractions.length;
 console.log(dMoyenne);*/
 if(physics.attractions.length>0){
-		dMoyenne = tot/physics.attractions.length;
-	console.log(" 2rem :"+att2remove.length+" att : "+physics.attractions.length+" moy : "+int(dMoyenne)+" limite :"+limiteAttraction);
+		dMoyenne = int(tot/physics.attractions.length);
+
+//	console.log(" 2rem :"+att2remove.length+" att : "+physics.attractions.length+" moy : "+int(dMoyenne)+" limite :"+limiteAttraction+" t2add :"+triplets2add.length);
 }
+/*
+if (physics.attractions.length>0) {
+  lim = min(limiteAttraction,dMoyenne );
+}else{lim = limiteAttraction;}*/
 }
 
 function continueRequete(){
@@ -547,7 +562,9 @@ message(jsonTriplets.length);
 	  console.log(i+"/"+jsonTriplets.length);
 		console.log(triplets);
 			triplets2links(triplets);
+			  if(physics.attractions.length<1000 ){
 			updateAttractions();
+		}
 }
 
 
@@ -594,7 +611,9 @@ function jsonDataOk(data){
 	  console.log(i+"/"+jsonTriplets.length);
 		console.log(triplets);
 			triplets2links(triplets);
+			  if(physics.attractions.length<1000 ){
 			updateAttractions();
+		}
 	/*	if(window.Worker){
 		//le navigateur supporte les workers
 				var tripletsWorker = new Worker("js/tripletWorker.js");

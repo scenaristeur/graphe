@@ -30,20 +30,22 @@ function windowResized() {
 function updateAttractions(){
 //  physics.attractions = [];
 
-if(physics.attractions.length>200){
+
+
+/*if(physics.attractions.length>200){
   physics.attractions.pop();
 //  console.log("POP");
-}
+}*/
 //if(physics.attractions.length<200){
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
     //  r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
-  //  if(physics.attractions.length<1000 ){
+    if(physics.attractions.length<1000 ){
     for(var j=0;j<noeuds.length;j++){
       //console.log(i +" "j);
       var noeudJ=noeuds[j];
 
-  	  if(noeudI!=noeudJ ){
+  	  if(noeudI!=noeudJ  ){
         var posI = noeudI.particule.position;
         var posJ = noeudJ.particule.position;
         var d = dist(posI.x,posI.y,posI.z, posJ.x,posJ.y,posJ.z);
@@ -105,12 +107,15 @@ if(physics.attractions.length>200){
         //console.log(hypothenuse);
      // if ( d<hypothenuse && springExist == false && attExist == false ){ //2.4
         //    console.log(d+" "+limiteAttraction);
-          if ( springExist == false && attExist == false  && ( d<min(limiteAttraction,dMoyenne+1 )) ){ //&& physics.attractions.length<1000 && (d<dMoyenne+1 || d<10) && ((d<frameRate() ||  && (d<dMoyenne+10)
+      //  lim = limiteAttraction;
+
+
+          if ( springExist == false && attExist == false  && ( d<limiteAttraction)  && physics.attractions.length<1000 ){ //&& physics.attractions.length<1000 && (d<dMoyenne+1 || d<10) && ((d<frameRate() ||  && (d<dMoyenne+10)
                 //  console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -50, limiteAttraction ); //-5,5
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -10*(noeudJ.particule.mass+noeudI.particule.mass),limiteAttraction ); //-5,5 -50, limiteAttraction-15
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 //console.log(physics.attractions.length);
 
@@ -118,7 +123,7 @@ if(physics.attractions.length>200){
 
       }
 
-  //  }
+    }
 }
 //}
 }
@@ -352,7 +357,6 @@ var objet = splitUri(objetUri);
 			}
 			if (noeud.id==objet[1]){
 				objetCourant=noeud;
-
 				oExist=true;
 			}
 		}
@@ -430,7 +434,7 @@ function changeZoom(event){
 //  console.log(cameraZ);
 }
 
-function stabilisation(){
+function stabi(){
 	// fonction de stabilisation en complement du physics.drag --> peut être pas si necessaire ?
 	for (var i=0;i<physics.particles.length;i++){
 	  var particule=physics.particles[i];
@@ -441,7 +445,7 @@ function stabilisation(){
 			particule.velocity.set( 0,0,0 );
 		}
 		else{
-			console.log(particule.id+" baisse "+velocity);
+		//	console.log(particule.id+" baisse "+velocity);
 			particule.velocity.set( .99*particule.velocity.x,.99*particule.velocity.y,.99*particule.velocity.z );
 		}
 	}
