@@ -3,13 +3,15 @@ function Noeud (prefix,id){
 this.id=id;
 this.prefix=prefix;
 
+
 this.img = loadImage("");
 this.imageConst;
 //var nbParticules = physics.particles.length*10;
 //var p = physics.makeParticle( 2.0, random( -nbParticules,nbParticules   ), random( -nbParticules,nbParticules ), random( -nbParticules,nbParticules ));
 //var p = physics.makeParticle( 2.0, random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2),random(-springLongueur*2,springLongueur*2));
-var p = physics.makeParticle( 3.0, random(-1,1),random(-1,1),random(0,limiteAttraction*4));
-
+var distance = 1;//(physics.particles.length);
+var p = physics.makeParticle( 10.0, random(-distance,distance),random(-distance,distance),random(-distance,distance));
+p.velocity = p5.Vector.random3D();
 //console.log(pos);
 //console.log(physics.particles.length);
 //p.makeFixed();
@@ -18,14 +20,6 @@ var p = physics.makeParticle( 3.0, random(-1,1),random(-1,1),random(0,limiteAttr
 this.particule=p;
 p.id=this.id;
 this.createImg();
-//r1 = physics.makeAttraction( centre, this.particule, 100, 200 );
-/*for(var i=0;i<noeuds.length;i++){
-	var noeud=noeuds[i];
-	if(noeud!=this){
-			r = physics.makeAttraction( noeud.particule, this.particule, -100, 200 );
-}}*/
-
-//updateAttractions();
 }
 Noeud.prototype.createImg = function(){
 //console.log(this.id);

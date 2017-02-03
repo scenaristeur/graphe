@@ -13,12 +13,12 @@ var inputSujet;
 var inputProp;
 var inputObjet;
 var modeCommande = true;
-var defautMessage = "Echap = mode Commande, i = mode Insertion. En mode commande  : h pour afficher cette aide,  </br> ";
+var defautMessage = "<font color='red'>Echap = mode Commande, i = mode Insertion. En mode commande  : h pour afficher cette aide,  </br> ";
 defautMessage+= "* et ù ou roulette pour zoomer, m et l pour la force des ressorts, : et ; pour la longueur des ressorts, + et - pour accelérer, ralentir les déplacements </br>";
 defautMessage+=" espace pour reinitialiser la camera,  clic ou a,z,q,s,w,x,e,d,c pour tourner, fleches pour se déplacer, n pour un nouveau graphe,  </br>";
 defautMessage+=" touche ! pour passer en 2D/3D, et les trois champs ci-dessous pour ajouter <a href='https://fr.wikipedia.org/wiki/Resource_Description_Framework' target='-blank'>un triplet RDF</a></br>";
 defautMessage+= "f pour charger les dix premières infos depuis un endpoint (serveur) sparql (valider deux fois pour le endpoint et la requete), g pour charger les dix suivantes et ggggggggg pour en charger plein </br>"
-defautMessage+="[[<a href='js/commande.js' target='_blank'>Commandes</a>]][[<a href='https://github.com/scenaristeur/graphe' target='_blank'>Code source</a>]]";
+defautMessage+="[[<a href='js/commande.js' target='_blank'>Commandes</a>]][[<a href='https://github.com/scenaristeur/graphe' target='_blank'>Code source</a>]]</font>";
 var rotationX = 0,rotationY = 0,rotationZ = 0;
 var font = '36pt Times';
 var afficheTout = true;
@@ -51,17 +51,18 @@ var offsetSparql = 0;
 //PHYSICS
 var physics;
 var PHYS_GRAVITY = 0;
-var PHYS_DRAG_DEFAULT = 0.05; //0.05
+var PHYS_DRAG_DEFAULT = 0.1; //0.05
 var PHYS_DRAG = PHYS_DRAG_DEFAULT;
-var SPRING_STRENGTH_DEFAULT = 0.003; //0.01
+var SPRING_STRENGTH_DEFAULT = 0.002; //0.01
 var SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
 var springLongueurDefault=300;
 var springLongueur=springLongueurDefault;
 //var seuilAtt=springLongueur*3;
-var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
+//var hypothenuse = Math.sqrt(Math.pow(springLongueur,2)*2);
 var centroid = new Smoother3D(0.9);
 var dMoyenne = springLongueur;
-var limiteAttraction = 150;
+var limiteAttractionDefaut = 300;
+var limiteAttraction = limiteAttractionDefaut;
 //var lim = 0;
 //var mouse,b,c =new Particle();
 //var inputLongueur;
@@ -138,16 +139,18 @@ exempleFile.position(10,210);
 	}
 console.log(triplets);
 	triplets2links(triplets);
-
+/*
 	  if(physics.attractions.length<1000 ){
 	updateAttractions();
-}
+}*/
 }
 
 
 
 function draw(){
-	background(204,255,204);
+//	background(204,255,204);
+background(0);
+
 	camera(cameraX,cameraY,cameraZ);
 		  normalMaterial();
 		//	message(frameRate());
@@ -190,7 +193,7 @@ function draw(){
   //mouse.position.x = mouseX-width/2;
   //mouse.position.y = mouseY-height/2;
   //mouse.position.z = 0;
-  physics.tick();
+
 
   //stroke( 2 );
 	//fill(10,0,0,10);
@@ -259,7 +262,7 @@ if (afficheTout == true){
 				rotateX(-rotationX);
 				rotateY(-rotationY);
 				rotateZ(-rotationZ);
-				translate( 10, 10 ,0 );
+				translate( 10+taille, 10+taille ,0 );
 				texture(particle.img);
 				plane(particle.IMGtaille, 20);
 				normalMaterial();
@@ -329,10 +332,7 @@ pop();
 physics.particles = shuffle(physics.particles);
 //if(frameRate()>10){
 
-if(physics.attractions.length<100){
 
-
-}
 /*if((physics.attractions.length<200)&& limiteAttraction<300){
 	limiteAttraction=limiteAttraction+1;
 	console.log(limiteAttraction);
@@ -341,28 +341,30 @@ if(physics.attractions.length<100){
 }else{
 	afficheTout=false;
 }*/
-	gereAttractions();
+
 
 
 //console.log(springs2add);
-if(springs2add.length>0){
-var lim = min(1,springs2add.length);
-for (var l=0;l<lim;l++){
-	var s2a=springs2add.pop();
+if((springs2add.length>0) && (physics.attractions.length<10)){
+		var lim = min(1,springs2add.length);
+		for (var l=0;l<lim;l++){
+					var s2a=springs2add.pop();
 
-s = physics.makeSpring( s2a.a, s2a.b, s2a.force, s2a.damping, s2a.longueur, s2a.propriete ); // force , damping, longueur
-s.imageConst = constructImage(s2a.propriete);
-s.img = s.imageConst[0];
-s.IMGtaille = s.imageConst[1];
-links.push(s);
+				s = physics.makeSpring( s2a.a, s2a.b, s2a.force/(s2a.a.mass+s2a.b.mass), s2a.damping+(s2a.a.mass+s2a.b.mass)/100, s2a.longueur+(s2a.a.mass+s2a.b.mass)*10, s2a.propriete ); // force , damping, longueur
+				s.imageConst = constructImage(s2a.propriete);
+				s.img = s.imageConst[0];
+				s.IMGtaille = s.imageConst[1];
+				links.push(s);
+
+				}
+		physics.drag = PHYS_DRAG_DEFAULT;
 }
 
-}
-  if(physics.attractions.length<1000 ){
-	updateAttractions();
+  //if(physics.attractions.length<200 ){
 
-	if((triplets2add.length>0) && (physics.attractions.length<500) ){
-		var lim=min(10,triplets2add.length);
+
+	if((triplets2add.length>0) ){ // && (physics.attractions.length<500) && (physics.attractions.length<40) 
+		var lim=min(15,triplets2add.length);
 			for (var l=0;l<lim;l++){
 				var t=triplets2add.pop();
 			//	console.log(t);
@@ -377,12 +379,13 @@ links.push(s);
 
 
 
-
+	updateAttractions();
 
 	//updateAttractions();
 
 
-}
+//}
+	gereAttractions();
 //if(triplets2add.length == 0){
 	//	continueRequete();
 
@@ -397,6 +400,8 @@ links.push(s);
 //console.log(physics.attractions.length);
 
 	//console.log(physics.attractions.length);
+
+		  physics.tick();
 }
 
 function shuffle(array) {
@@ -439,32 +444,47 @@ function gereAttractions(){
 			//		if (d>(springLongueur)){
 			att2remove.push(att);
 	//	message(physics.attractions.length);
-		}
+}else{
 					tot +=d;
+}}
+
+
+for (var j=0;j<att2remove.length;j++){
+	var att = att2remove[j];
+	physics.attractions.remove(att);
+//	console.log("rem");
 }
 
 
-
-
-	for (var j=0;j<att2remove.length;j++){
-		var att = att2remove[j];
-		physics.attractions.remove(att);
-	//	console.log("rem");
-	}
 	/*
 console.log(physics.attractions.length);
 dMoyenne = tot/physics.attractions.length;
 console.log(dMoyenne);*/
 if(physics.attractions.length>0){
-		dMoyenne = int(tot/physics.attractions.length);
+	//att2remove.push(physics.attractions[0]);
+	//	dMoyenne = int(tot/physics.attractions.length);
+dMoyenne = int(tot/physics.attractions.length)-physics.attractions.length/10;
 
-//	console.log(" 2rem :"+att2remove.length+" att : "+physics.attractions.length+" moy : "+int(dMoyenne)+" limite :"+limiteAttraction+" t2add :"+triplets2add.length);
+} else{
+	dMoyenne = limiteAttraction;
+		dMoyenne = limiteAttraction-100-physics.attractions.length/10;
 }
+
+
+	console.log(" 2rem :"+att2remove.length+" att : "+physics.attractions.length+" moy : "+int(dMoyenne)+" limite :"+limiteAttraction+" t2add :"+triplets2add.length);
 /*
 if (physics.attractions.length>0) {
   lim = min(limiteAttraction,dMoyenne );
 }else{lim = limiteAttraction;}*/
+//debug();
+
 }
+/*function debug(){
+	var fps = frameRate();
+fill(255);
+stroke(0);
+message("FPS: " + fps.toFixed(2), 10, height - 10);
+}*/
 
 function continueRequete(){
 	offsetSparql+=limiteSparql;

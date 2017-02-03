@@ -17,21 +17,21 @@ function commandes(){
   	cameraX-=facteurZoom;
   if (keyIsDown(RIGHT_ARROW))//fleche droite
   	cameraX+=facteurZoom;
-  if (keyIsDown(220))// touche *
+  if (keyIsDown(220))//*
     cameraZ-=facteurZoom*2;
-  if (keyIsDown(192))//touche ù
+  if (keyIsDown(192))//ù
     cameraZ+=facteurZoom*2;
-  if (keyIsDown(75)){//touche k{
+  if (keyIsDown(75)){//k{
       limiteAttraction=limiteAttraction+10;
       message("Limite Attraction : "+ limiteAttraction);
       updateAttractions();
     }
-  if (keyIsDown(74)){//touche j
+  if (keyIsDown(74)){//j
       limiteAttraction=limiteAttraction-10;
       message("Limite Attraction : "+ limiteAttraction);
       updateAttractions();
     }
-  if (keyIsDown(73)){ // touche i pour passer en mode insertion comme vi =  sortir du mode commande
+  if (keyIsDown(73)){ //i pour passer en mode insertion comme vi =  sortir du mode commande
     modeCommande = false;
     message("Mode commande : "+modeCommande);
       document.getElementById('inputSujet').focus();
@@ -150,7 +150,7 @@ function keyPressed() {
         springLongueur = springLongueurDefault;
         SPRING_STRENGTH = SPRING_STRENGTH_DEFAULT;
         PHYS_DRAG = PHYS_DRAG_DEFAULT;
-        limiteAttraction = 100;
+        limiteAttraction = limiteAttractionDefaut;
         rotationX = 0;
         rotationY = 0;
         rotationZ = 0;
@@ -159,13 +159,13 @@ function keyPressed() {
        break;
        case 187:
         // - pour ralentir les déplacements
-        physics.drag = max ((physics.drag-0.05).toFixed(2),0);
+        physics.drag = max ((physics.drag-0.01).toFixed(2),0);
         console.log(physics.drag);
         message("Retention mouvement : "+ physics.drag+" / "+modeAff);
       break;
       case 54:
         //+ pour accélérer les déplacements
-        physics.drag+=0.05;
+        physics.drag+=0.01;
         console.log(physics.drag);
         message("Retention mouvement : "+ physics.drag+" / "+modeAff);
       break;

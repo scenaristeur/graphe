@@ -4,7 +4,7 @@
 
 //affiche un message sur la page
 function message(texte){
-    divMessages.elt.innerHTML=texte+" </br> 'Echap' + 'h' pour afficher l'aide";
+    divMessages.elt.innerHTML="<font color='red'>"+texte+"</br> 'Echap' + 'h' pour afficher l'aide</font> ";
 }
 
 function getQueryParams(qs) {
@@ -40,15 +40,16 @@ function updateAttractions(){
   for(var i=0;i<noeuds.length;i++){
     var noeudI=noeuds[i];
     //  r1 = physics.makeAttraction( centre, noeudI.particule, springLongueur/2, 2*springLongueur );
-    if(physics.attractions.length<1000 ){
+  //  if(physics.attractions.length<1000 ){
     for(var j=0;j<noeuds.length;j++){
       //console.log(i +" "j);
       var noeudJ=noeuds[j];
-
-  	  if(noeudI!=noeudJ  ){
-        var posI = noeudI.particule.position;
-        var posJ = noeudJ.particule.position;
+      var posI = noeudI.particule.position;
+      var posJ = noeudJ.particule.position;
         var d = dist(posI.x,posI.y,posI.z, posJ.x,posJ.y,posJ.z);
+  	  if(noeudI!=noeudJ  ){
+
+
 
         //on n'ajoute que si un spring n'existe passer
         var springExist = false;
@@ -75,11 +76,11 @@ function updateAttractions(){
           //console.log(b);
           if(((a1==noeudI.particule) && (b1==noeudJ.particule)) || ((b1==noeudI.particule) && (a1==noeudJ.particule))){
             attExist = true;
-            push();
+          /*  push();
             translate (noeudI.particule.position);
 
               sphere(300);
-              pop();
+              pop();*/
           /*  push();
             translate(posI.x,posI.y,posI.z);
             sphere(30);
@@ -110,20 +111,21 @@ function updateAttractions(){
       //  lim = limiteAttraction;
 
 
-          if ( springExist == false && attExist == false  && ( d<limiteAttraction)  && physics.attractions.length<1000 ){ //&& physics.attractions.length<1000 && (d<dMoyenne+1 || d<10) && ((d<frameRate() ||  && (d<dMoyenne+10)
+          if ( springExist == false && attExist == false  &&  ( d<dMoyenne-10)  ){ //&& physics.attractions.length<2000 //  && physics.attractions.length<2000 //&& physics.attractions.length<1000 && (d<dMoyenne+1 || d<10) && ((d<frameRate() ||  && (d<dMoyenne+10)
                 //  console.log(d);
 
  			  // r = physics.Attraction( noeudJ.particule, noeudI.particule, -80, springLongueur*2 );    //     console.log("add");
 
-  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -10*(noeudJ.particule.mass+noeudI.particule.mass),limiteAttraction ); //-5,5 -50, limiteAttraction-15
+  			  r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -5*(noeudJ.particule.mass+noeudI.particule.mass),limiteAttraction); //-5,5 -50, limiteAttraction-15
           			//   r = physics.makeAttraction( noeudJ.particule, noeudI.particule, -30,hypothenuse*1.5 );
 //console.log(physics.attractions.length);
+//-10*(noeudJ.particule.mass+noeudI.particule.mass)*(limiteAttraction-d)
 
          }
 
       }
 
-    }
+//  }
 }
 //}
 }
@@ -325,7 +327,8 @@ function splitUri(uri){
 // triplets to links, change les triplets en liens
 
 function triplets2links(triplets){
-  inc=2*3.14/triplets.length;
+//  inc=2*3.14/triplets.length;
+physics.drag = 0;
 	for (var i=0;i<triplets.length;i++){
 		var sujetCourant;
 		var objetCourant;
@@ -379,7 +382,7 @@ var objet = splitUri(objetUri);
   var m=(sujetCourant.particule.mass+objetCourant.particule.mass);
 	//	s = physics.makeSpring( sujetCourant.particule, objetCourant.particule, (SPRING_STRENGTH+(random(SPRING_STRENGTH)))/m, 0.01, springLongueur+random(springLongueur)+100*m, propriete[0] ); // force , damping, longueur
 
-spring={a:sujetCourant.particule,b:objetCourant.particule, force:SPRING_STRENGTH,damping:0.1,longueur : springLongueur, propriete:propriete[1]};
+spring={a:sujetCourant.particule,b:objetCourant.particule, force:SPRING_STRENGTH,damping:0.5,longueur : springLongueur, propriete:propriete[1]};
   springs2add.push(spring);
 
 
